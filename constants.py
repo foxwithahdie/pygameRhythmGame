@@ -14,3 +14,5 @@ ASSET_DIRECTORY = "assets"
 SCROLL_SPEED = 50
 
 KEY_Y_POS = 480
+
+

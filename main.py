@@ -20,10 +20,10 @@ def main():
     global player_keys
     player_keys = []
     
-    key_1: object = KeySprite(KeySpriteType.YELLOW, constants.SCREEN_WIDTH / 5, context.notes_group, screen_hint=screen)
-    key_2: object = KeySprite(KeySpriteType.RED, constants.SCREEN_WIDTH / 5 * 2, context.notes_group, screen_hint=screen)
-    key_3: object = KeySprite(KeySpriteType.PURPLE, constants.SCREEN_WIDTH / 5 * 3, context.notes_group, screen_hint=screen)
-    key_4: object = KeySprite(KeySpriteType.BLUE, constants.SCREEN_WIDTH / 5 * 4, context.notes_group, screen_hint=screen)
+    key_1: object = KeySprite(KeySpriteType.YELLOW, 150,"d", context.notes_group, screen_hint=screen)
+    key_2: object = KeySprite(KeySpriteType.RED, 250,"f", context.notes_group, screen_hint=screen)
+    key_3: object = KeySprite(KeySpriteType.PURPLE, 350,"j", context.notes_group, screen_hint=screen)
+    key_4: object = KeySprite(KeySpriteType.BLUE, 450,"k", context.notes_group, screen_hint=screen)
     
     player_keys.append(key_1)
     player_keys.append(key_2)
@@ -35,7 +35,6 @@ def main():
         delta_time = clock.tick(constants.FPS) / 1000.0
         running = game_loop(screen, delta_time, context)
         pygame.display.flip()
-
 
 def game_loop(screen: pygame.Surface, delta_time: float, context: GameContext) -> bool:
     """
@@ -55,6 +54,8 @@ def game_loop(screen: pygame.Surface, delta_time: float, context: GameContext) -
     context.notes_group.update(delta_time)
 
     screen.fill(constants.BACKGROUND_COLOR)
+    for key in player_keys:
+        key.draw(key.key_type, screen)
     context.notes_group.draw(screen)
     return True
 
