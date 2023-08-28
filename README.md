@@ -13,5 +13,7 @@ Additions to this version:
     - Better Menu
     - Song selection?
 
-
 Current Status: Complete restart
+
+To Do:
+- [ ] Flipping surface vs. changing position
