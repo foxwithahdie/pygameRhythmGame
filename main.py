@@ -1,6 +1,7 @@
 import pygame as pyg
 import constants
 
+
 def main():
     pyg.init()
 
@@ -29,7 +30,7 @@ def game_loop(screen: pyg.Surface, delta_time: float) -> bool:
             return False
 
     screen.fill(constants.BACKGROUND_COLOR)
-        
+
     return True
 
 
