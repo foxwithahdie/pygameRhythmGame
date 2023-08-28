@@ -1,22 +1,22 @@
-import pygame
+import pygame as pyg
 import constants
 
-
 def main():
-    pygame.init()
+    pyg.init()
 
-    pygame.display.set_caption(constants.WINDOW_TITLE)
+    pyg.display.set_caption(constants.WINDOW_TITLE)
 
-    screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
-    clock = pygame.time.Clock()
+    screen = pyg.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
+    clock = pyg.time.Clock()
     running = True
 
     while running:
         delta_time = clock.tick(constants.FPS) / 1000.0
         running = game_loop(screen, delta_time)
+        pyg.display.flip()
 
 
-def game_loop(screen: pygame.Surface, delta_time: float) -> bool:
+def game_loop(screen: pyg.Surface, delta_time: float) -> bool:
     """
     The main loop of the game.
     :param screen: The screen to draw on.
@@ -24,9 +24,11 @@ def game_loop(screen: pygame.Surface, delta_time: float) -> bool:
     :return: Whether the game should continue running.
     """
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in pyg.event.get():
+        if event.type == pyg.QUIT:
             return False
+
+    screen.fill(constants.BACKGROUND_COLOR)
         
     return True
 
