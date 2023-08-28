@@ -17,11 +17,19 @@ def main():
     context = GameContext()
 
     NoteSprite(NoteSpriteType.BLUE, constants.SCREEN_WIDTH / 2, context.notes_group, surface_hint=screen)
+    global player_keys
+    player_keys = []
+    
+    key_1: object = KeySprite(KeySpriteType.YELLOW, constants.SCREEN_WIDTH / 5, context.notes_group, screen_hint=screen)
+    key_2: object = KeySprite(KeySpriteType.RED, constants.SCREEN_WIDTH / 5 * 2, context.notes_group, screen_hint=screen)
+    key_3: object = KeySprite(KeySpriteType.PURPLE, constants.SCREEN_WIDTH / 5 * 3, context.notes_group, screen_hint=screen)
+    key_4: object = KeySprite(KeySpriteType.BLUE, constants.SCREEN_WIDTH / 5 * 4, context.notes_group, screen_hint=screen)
+    
+    player_keys.append(key_1)
+    player_keys.append(key_2)
+    player_keys.append(key_3)
+    player_keys.append(key_4)
 
-    KeySprite(KeySpriteType.YELLOW, constants.SCREEN_WIDTH / 5, context.notes_group, screen_hint=screen)
-    KeySprite(KeySpriteType.RED, constants.SCREEN_WIDTH / 5 * 2, context.notes_group, screen_hint=screen)
-    KeySprite(KeySpriteType.PURPLE, constants.SCREEN_WIDTH / 5 * 3, context.notes_group, screen_hint=screen)
-    KeySprite(KeySpriteType.BLUE, constants.SCREEN_WIDTH / 5 * 4, context.notes_group, screen_hint=screen)
 
     while running:
         delta_time = clock.tick(constants.FPS) / 1000.0
@@ -39,14 +47,15 @@ def game_loop(screen: pygame.Surface, delta_time: float, context: GameContext) -
     """
 
     for event in pygame.event.get():
+        
         if event.type == pygame.QUIT:
             return False
-
+        for key in player_keys:
+            key.press_button(event, screen_hint = screen)
     context.notes_group.update(delta_time)
 
     screen.fill(constants.BACKGROUND_COLOR)
     context.notes_group.draw(screen)
-
     return True
 
 

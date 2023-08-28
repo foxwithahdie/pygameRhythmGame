@@ -16,4 +16,6 @@ Additions to this version:
 Current Status: Complete restart
 
 To Do:
-- [ ] Flipping surface vs. changing position
+- [ ] Figure out bug of defaulting to the counter of the screen when button is pressed to highlight colors
+- [ ] Find a better way to iterate over the list of key sprites?
+- [ ] Look over old functions to find either better ways to optimize / not require them OR better ways to implement them if they are required
