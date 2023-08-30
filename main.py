@@ -25,10 +25,7 @@ def main():
     key_3: object = KeySprite(KeySpriteType.PURPLE, 350,"j", context.notes_group, screen_hint=screen)
     key_4: object = KeySprite(KeySpriteType.BLUE, 450,"k", context.notes_group, screen_hint=screen)
     
-    player_keys.append(key_1)
-    player_keys.append(key_2)
-    player_keys.append(key_3)
-    player_keys.append(key_4)
+    player_keys.append(key_1); player_keys.append(key_2); player_keys.append(key_3); player_keys.append(key_4)
 
 
     while running:
