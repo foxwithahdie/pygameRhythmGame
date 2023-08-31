@@ -17,8 +17,7 @@ def main():
     context = GameContext()
 
     NoteSprite(NoteSpriteType.BLUE, constants.SCREEN_WIDTH / 2, context.notes_group, surface_hint=screen)
-    global player_keys
-    player_keys = []
+    global player_keys; player_keys: list = []
     
     key_1: object = KeySprite(KeySpriteType.YELLOW, 150,"d", context.notes_group, screen_hint=screen)
     key_2: object = KeySprite(KeySpriteType.RED, 250,"f", context.notes_group, screen_hint=screen)
