@@ -7,3 +7,4 @@ class GameContext:
     """
 
     notes_group: pygame.sprite.Group = pygame.sprite.Group()
+    settings: pygame.sprite.Group = pygame.sprite.Group()

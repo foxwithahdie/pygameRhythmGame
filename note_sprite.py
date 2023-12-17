@@ -4,7 +4,6 @@ from typing import Union, Any
 
 import pygame
 from pygame.sprite import Sprite
-import os
 
 import constants
 import helpers
@@ -49,12 +48,14 @@ class NoteSprite(Sprite):
 
     def __init__(self, note_type: NoteSpriteType, x_pos: int, *groups, surface_hint: Union[pygame.Surface, None] = None):
         super().__init__(*groups)
-
-        self.image = pygame.image.load(note_type.circle_image).convert_alpha(surface_hint)
+        if surface_hint is not None:
+            self.image = pygame.image.load(note_type.circle_image).convert_alpha(surface_hint)
+        else:
+            self.image = pygame.image.load(note_type.circle_image).convert_alpha()
         self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2/3))
 
         self.rect = self.image.get_rect()
-        self.rect.x = x_pos - self.rect.width / 2
+        self.rect.x = x_pos - self.rect.width // 2
 
     def update(self, delta_time: float) -> None:
-        self.rect.y += constants.SCROLL_SPEED * delta_time
+        self.rect.y += int(constants.SCROLL_SPEED * delta_time)

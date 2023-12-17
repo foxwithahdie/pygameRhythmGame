@@ -48,25 +48,28 @@ class KeySprite(Sprite):
     def __init__(self, key_type: KeySpriteType, x_pos: int, key: str, *groups, screen_hint: Union[pygame.Surface, None] = None):
         super().__init__(*groups)
         self.key_type = key_type
-        self.x = x_pos
-        self.image = pygame.image.load(key_type.grey_circle_image).convert_alpha(screen_hint)
+        self.x_pos = x_pos
+        if screen_hint is not None:
+            self.image = pygame.image.load(key_type.grey_circle_image).convert_alpha(screen_hint)
+        else:
+            self.image = pygame.image.load(key_type.grey_circle_image).convert_alpha()
         self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
 
         self.rect = self.image.get_rect()
-        self.rect.x = self.x - self.rect.width / 2
+        self.rect.x = self.x_pos - self.rect.width // 2
         self.rect.y = constants.KEY_Y_POS
         self.key = pygame.key.key_code(key)
         self.keydown = False
-    def press_button(self, event: pygame.event.get(), screen_hint: Union[pygame.Surface, None] = None):
+    def press_button(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == self.key:
                 self.keydown = True
-                self.rect.x = self.x - self.rect.width / 2
+                self.rect.x = self.x_pos - self.rect.width // 2
                 self.rect.y = constants.KEY_Y_POS
         if event.type == pygame.KEYUP:
             self.keydown = False
             
-            self.rect.x = self.x - self.rect.width / 2
+            self.rect.x = self.x_pos - self.rect.width // 2
             self.rect.y = constants.KEY_Y_POS
     def draw(self, key_type: KeySpriteType, surface: pygame.Surface):
         if self.keydown:
