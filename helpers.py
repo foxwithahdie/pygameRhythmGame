@@ -21,19 +21,26 @@ def rect_distance(rect1: pygame.Rect, rect2: pygame.Rect) -> float:
     Calculates the distance between two rectangles.
     :param rect1:
     :param rect2:
-    :return:
+    :return: Distance between the two rectangles.
     """
 
     return ((rect2.centerx - rect1.centerx) ** 2 + (rect2.centery - rect1.centery) ** 2) ** 0.5
 
-def key_padding() -> int:
+def key_padding(screen: pygame.Surface) -> int:
+    """
+    Calculates the padding around the keys.
+    :param screen: Surface for image optimization.
+    :return: Pixel width of padding.
+    """
     screen_width: int = constants.SCREEN_WIDTH
-    image = pygame.image.load(os.path.join(constants.ASSET_DIRECTORY, "grey_circle.png")).convert_alpha()
-    key_rect_left: int = 137 - image.get_size()[0]//2
-    key_rect_right: int = (137 * 4) + image.get_size()[0]//2
+    key_spacing = constants.KEY_SPACING
+    image = pygame.image.load(os.path.join(constants.ASSET_DIRECTORY, "grey_circle.png")).convert_alpha(screen)
+    image = pygame.transform.scale(image, scale_size(image.get_size(), (2 / 3)))
+    key_rect_left: int = key_spacing - image.get_width()//2
+    key_rect_right: int = (key_spacing * 4) + image.get_width()//2
     key_rect_width: int = key_rect_right - key_rect_left
     
-    return (screen_width - key_rect_width) // 2
-
-def main_space_x_range() -> tuple[int, int]:
-    return key_padding(), constants.SCREEN_WIDTH - key_padding()
+    # print("key_rect_left: ", key_rect_left)
+    # print("key_rect_right: ", key_rect_right)
+    
+    return (screen_width - key_rect_width) // (key_spacing // 15)

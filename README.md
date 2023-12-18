@@ -16,6 +16,6 @@ Additions to this version:
 Current Status: Complete restart
 
 To Do:
-- [ ] Find a better way to iterate over the list of key sprites?
-- [ ] Look over old functions to find either better ways to optimize / not require them OR better ways to implement them if they are required
-- [ ] Build on Key Spacing. Requires a multiplier to increase the spacing and move everything back into its original space (decrease multiplier as well).
+- [ ] Create a function for key padding and lane offset
+- [ ] Start implementing sliders and settings
+- [ ] Song menu
