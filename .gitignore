@@ -288,6 +288,8 @@ poetry.toml
 pyrightconfig.json
 
 ### VisualStudioCode ###
+.vscode/.fleet/*
+!.vscode/.fleet/run.json
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json

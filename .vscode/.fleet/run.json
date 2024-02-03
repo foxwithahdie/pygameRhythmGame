@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "python",
+            "name": "Pygame config",
+            "file": "main.py",
+            "arguments": [],
+        },
+        
+    ]
+}
