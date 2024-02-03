@@ -53,9 +53,7 @@ class NoteSprite(Sprite):
         else:
             self.image = pygame.image.load(note_type.circle_image).convert_alpha()
         self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2/3))
-
-        self.rect = self.image.get_rect()
-        self.rect.x = x_pos - self.rect.width // 2
+        self.rect = self.image.get_rect(centerx=x_pos)
 
     def update(self, delta_time: float) -> None:
-        self.rect.y += int(constants.SCROLL_SPEED * delta_time)
+        self.rect.centery += int(delta_time * constants.SCROLL_SPEED)

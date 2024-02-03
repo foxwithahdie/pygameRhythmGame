@@ -26,13 +26,13 @@ def main():
     player_key_x_pos = []
     
     key_1: KeySprite = KeySprite(KeySpriteType.YELLOW, helpers.key_padding(screen) + constants.KEY_SPACING,
-                                 "d", context.notes_group, screen_hint=screen)
+                                 "d", context.key_group, screen_hint=screen)
     key_2: KeySprite = KeySprite(KeySpriteType.RED, helpers.key_padding(screen) + (constants.KEY_SPACING * 2),
-                                 "f", context.notes_group, screen_hint=screen)
+                                 "f", context.key_group, screen_hint=screen)
     key_3: KeySprite = KeySprite(KeySpriteType.PURPLE, helpers.key_padding(screen) + (constants.KEY_SPACING * 3),
-                                 "j", context.notes_group, screen_hint=screen)
+                                 "j", context.key_group, screen_hint=screen)
     key_4: KeySprite = KeySprite(KeySpriteType.BLUE, helpers.key_padding(screen) + (constants.KEY_SPACING * 4),
-                                 "k", context.notes_group, screen_hint=screen)
+                                 "k", context.key_group, screen_hint=screen)
     
     player_keys.append(key_1); player_keys.append(key_2)
     player_keys.append(key_3); player_keys.append(key_4)
@@ -59,13 +59,15 @@ def game_loop(screen: pygame.Surface, delta_time: float, context: GameContext) -
                 return False
         for key in player_keys:
             key.press_button(event)
+            
     screen.fill(constants.BACKGROUND_COLOR)
-    context.notes_group.update(delta_time)
-
-    
-    for key in player_keys:
-        key.draw(key.key_type, screen)
     context.notes_group.draw(screen)
+
+    for key in player_keys:
+            key.draw(key.key_type, screen)
+    
+    context.notes_group.update(delta_time)
+    
     return True
 
 

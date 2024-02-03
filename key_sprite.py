@@ -55,22 +55,19 @@ class KeySprite(Sprite):
             self.image = pygame.image.load(key_type.grey_circle_image).convert_alpha()
         self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
 
-        self.rect = self.image.get_rect()
-        self.rect.x = self.x_pos - self.rect.width // 2
-        self.rect.y = constants.KEY_Y_POS
+        self.rect = self.image.get_rect(center=(self.x_pos, constants.KEY_Y_POS))
         self.key = pygame.key.key_code(key)
         self.keydown = False
+        
     def press_button(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == self.key:
                 self.keydown = True
-                self.rect.x = self.x_pos - self.rect.width // 2
-                self.rect.y = constants.KEY_Y_POS
+                self.rect.center = (self.x_pos, constants.KEY_Y_POS)
         if event.type == pygame.KEYUP:
             self.keydown = False
+            self.rect.center = (self.x_pos, constants.KEY_Y_POS)
             
-            self.rect.x = self.x_pos - self.rect.width // 2
-            self.rect.y = constants.KEY_Y_POS
     def draw(self, key_type: KeySpriteType, surface: pygame.Surface):
         if self.keydown:
             self.image = pygame.image.load(self.key_type.dull_circle_image).convert_alpha(surface)
