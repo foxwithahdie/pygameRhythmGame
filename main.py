@@ -54,8 +54,9 @@ def game_loop(screen: pygame.Surface, delta_time: float, context: GameContext) -
     """
 
     for event in pygame.event.get():   
-        if event.type == pygame.QUIT:
-            return False
+        match event.type:
+            case pygame.QUIT:
+                return False
         for key in player_keys:
             key.press_button(event)
     screen.fill(constants.BACKGROUND_COLOR)
