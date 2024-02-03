@@ -46,7 +46,8 @@ class NoteSprite(Sprite):
     A sprite representing a falling note.
     """
 
-    def __init__(self, note_type: NoteSpriteType, x_pos: int, *groups, surface_hint: Union[pygame.Surface, None] = None):
+    def __init__(self, note_type: NoteSpriteType, x_pos: int, *groups,
+                 surface_hint: Union[pygame.Surface, None] = None):
         super().__init__(*groups)
         if surface_hint is not None:
             self.image = pygame.image.load(note_type.circle_image).convert_alpha(surface_hint)

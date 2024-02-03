@@ -45,7 +45,8 @@ class KeySpriteType(Enum):
 
 
 class KeySprite(Sprite):
-    def __init__(self, key_type: KeySpriteType, x_pos: int, key: str, *groups, screen_hint: Union[pygame.Surface, None] = None):
+    def __init__(self, key_type: KeySpriteType, x_pos: int, key: str, *groups,
+                 screen_hint: Union[pygame.Surface, None] = None):
         super().__init__(*groups)
         self.key_type = key_type
         self.x_pos = x_pos
@@ -58,8 +59,8 @@ class KeySprite(Sprite):
         self.rect = self.image.get_rect(center=(self.x_pos, constants.KEY_Y_POS))
         self.key = pygame.key.key_code(key)
         self.keydown = False
-        
-    def press_button(self, event):
+
+    def press_button(self, event: pygame.event) -> None:
         if event.type == pygame.KEYDOWN:
             if event.key == self.key:
                 self.keydown = True
@@ -67,13 +68,13 @@ class KeySprite(Sprite):
         if event.type == pygame.KEYUP:
             self.keydown = False
             self.rect.center = (self.x_pos, constants.KEY_Y_POS)
-            
-    def draw(self, key_type: KeySpriteType, surface: pygame.Surface):
+
+    def draw(self, key_type: KeySpriteType, surface: pygame.Surface) -> None:
         if self.keydown:
             self.image = pygame.image.load(self.key_type.dull_circle_image).convert_alpha(surface)
-            self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2/3))
+            self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
             surface.blit(self.image, self.rect)
         else:
             self.image = pygame.image.load(key_type.grey_circle_image).convert_alpha(surface)
-            self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2/3))
+            self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
             surface.blit(self.image, self.rect)

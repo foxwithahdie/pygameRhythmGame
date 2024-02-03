@@ -4,9 +4,10 @@ import helpers
 from game_context import GameContext
 from key_sprite import KeySprite, KeySpriteType
 from note_sprite import NoteSprite, NoteSpriteType
+global player_keys, player_key_x_pos
 
 
-def main():
+def main() -> None:
     pygame.init()
 
     pygame.display.set_caption(constants.WINDOW_TITLE)
@@ -14,16 +15,15 @@ def main():
     screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     running = True
-
     context = GameContext()
+
+    global player_keys, player_key_x_pos
 
     NoteSprite(NoteSpriteType.BLUE, constants.SCREEN_WIDTH // 2, context.notes_group, surface_hint=screen)
     
-    global player_keys
-    player_keys = []
+    player_keys: list[KeySprite] = []
     
-    global player_key_x_pos
-    player_key_x_pos = []
+    player_key_x_pos: list[int] = []
     
     key_1: KeySprite = KeySprite(KeySpriteType.YELLOW, helpers.key_padding(screen) + constants.KEY_SPACING,
                                  "d", context.key_group, screen_hint=screen)
@@ -34,15 +34,18 @@ def main():
     key_4: KeySprite = KeySprite(KeySpriteType.BLUE, helpers.key_padding(screen) + (constants.KEY_SPACING * 4),
                                  "k", context.key_group, screen_hint=screen)
     
-    player_keys.append(key_1); player_keys.append(key_2)
-    player_keys.append(key_3); player_keys.append(key_4)
-    player_key_x_pos.append(key_1.x_pos); player_key_x_pos.append(key_2.x_pos)
-    player_key_x_pos.append(key_3.x_pos); player_key_x_pos.append(key_4.x_pos)
+    player_keys.append(key_1)
+    player_keys.append(key_2)
+    player_keys.append(key_3)
+    player_keys.append(key_4)
+    for key in player_keys:
+        player_key_x_pos.append(key.x_pos)
 
     while running:
         delta_time = clock.tick(constants.FPS) / 1000.0
         running = game_loop(screen, delta_time, context)
         pygame.display.flip()
+
 
 def game_loop(screen: pygame.Surface, delta_time: float, context: GameContext) -> bool:
     """
@@ -64,8 +67,8 @@ def game_loop(screen: pygame.Surface, delta_time: float, context: GameContext) -
     context.notes_group.draw(screen)
 
     for key in player_keys:
-            key.draw(key.key_type, screen)
-    
+        key.draw(key.key_type, screen)
+
     context.notes_group.update(delta_time)
     
     return True
