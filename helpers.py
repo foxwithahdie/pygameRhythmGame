@@ -43,4 +43,4 @@ def key_padding(screen: pygame.Surface) -> int:
     # print("key_rect_left: ", key_rect_left)
     # print("key_rect_right: ", key_rect_right)
     
-    return (screen_width - key_rect_width) // (key_spacing // 15)
+    return (screen_width - key_rect_width) // (key_spacing // (15))
