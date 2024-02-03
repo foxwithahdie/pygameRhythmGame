@@ -288,13 +288,16 @@ poetry.toml
 pyrightconfig.json
 
 ### VisualStudioCode ###
-.vscode/.fleet/*
-!.vscode/.fleet/run.json
+
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
+
+### Fleet ###
+
+!.fleet/run.json
 
 # Local History for Visual Studio Code
 .history/
