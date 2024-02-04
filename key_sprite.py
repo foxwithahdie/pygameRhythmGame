@@ -1,6 +1,5 @@
 import os
 from enum import Enum
-from typing import Union
 
 import pygame
 from pygame.sprite import Sprite
@@ -46,7 +45,7 @@ class KeySpriteType(Enum):
 
 class KeySprite(Sprite):
     def __init__(self, key_type: KeySpriteType, x_pos: int, key: str, *groups,
-                 screen_hint: Union[pygame.Surface, None] = None):
+                 screen_hint: pygame.Surface | None = None):
         super().__init__(*groups)
         self.key_type = key_type
         self.x_pos = x_pos
@@ -55,20 +54,25 @@ class KeySprite(Sprite):
         else:
             self.image = pygame.image.load(key_type.grey_circle_image).convert_alpha()
         self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
-
-        self.rect = self.image.get_rect(center=(self.x_pos, constants.KEY_Y_POS))
+        self.rect = self.image.get_rect(center=(self.x_pos, helpers.key_direction()))
         self.key = pygame.key.key_code(key)
         self.keydown = False
 
-    def press_button(self, event: pygame.event) -> None:
+    def press_button(self, event: pygame.event.Event) -> None:
         if event.type == pygame.KEYDOWN:
             if event.key == self.key:
                 self.keydown = True
-                self.rect.center = (self.x_pos, constants.KEY_Y_POS)
+                self.rect.center = (self.x_pos, helpers.key_direction())
         if event.type == pygame.KEYUP:
             self.keydown = False
-            self.rect.center = (self.x_pos, constants.KEY_Y_POS)
-
+            self.rect.center = (self.x_pos, helpers.key_direction())
+    
+    def update_x_pos(self, x_position: int) -> None:
+        self.x_pos = x_position
+    
+    def change_keybind(self, key: str) -> None:
+        self.key = pygame.key.key_code(key)
+    
     def draw(self, key_type: KeySpriteType, surface: pygame.Surface) -> None:
         if self.keydown:
             self.image = pygame.image.load(self.key_type.dull_circle_image).convert_alpha(surface)

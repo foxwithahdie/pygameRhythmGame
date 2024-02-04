@@ -4,6 +4,8 @@ import helpers
 from game_context import GameContext
 from key_sprite import KeySprite, KeySpriteType
 from note_sprite import NoteSprite, NoteSpriteType
+
+# player_keys: list[KeySprite], player_key_x_pos: list[int]
 global player_keys, player_key_x_pos
 
 
@@ -21,26 +23,27 @@ def main() -> None:
 
     NoteSprite(NoteSpriteType.BLUE, constants.SCREEN_WIDTH // 2, context.notes_group, surface_hint=screen)
     
-    player_keys: list[KeySprite] = []
+    player_keys = []
     
-    player_key_x_pos: list[int] = []
+    player_key_x_pos = []
     
-    key_1: KeySprite = KeySprite(KeySpriteType.YELLOW, helpers.key_padding(screen) + constants.KEY_SPACING,
+    key_1: KeySprite = KeySprite(KeySpriteType.YELLOW, (helpers.key_padding() + constants.CIRCLE_KEY_WIDTH // 2),
                                  "d", context.key_group, screen_hint=screen)
-    key_2: KeySprite = KeySprite(KeySpriteType.RED, helpers.key_padding(screen) + (constants.KEY_SPACING * 2),
+    key_2: KeySprite = KeySprite(KeySpriteType.RED, 
+                                 (helpers.key_padding() + constants.CIRCLE_KEY_WIDTH // 2 + constants.KEY_SPACING),
                                  "f", context.key_group, screen_hint=screen)
-    key_3: KeySprite = KeySprite(KeySpriteType.PURPLE, helpers.key_padding(screen) + (constants.KEY_SPACING * 3),
+    key_3: KeySprite = KeySprite(KeySpriteType.PURPLE, 
+                                 (helpers.key_padding() + constants.CIRCLE_KEY_WIDTH // 2 + constants.KEY_SPACING * 2),
                                  "j", context.key_group, screen_hint=screen)
-    key_4: KeySprite = KeySprite(KeySpriteType.BLUE, helpers.key_padding(screen) + (constants.KEY_SPACING * 4),
+    key_4: KeySprite = KeySprite(KeySpriteType.BLUE, 
+                                 (helpers.key_padding() + constants.CIRCLE_KEY_WIDTH // 2 + constants.KEY_SPACING * 3),
                                  "k", context.key_group, screen_hint=screen)
     
     player_keys.append(key_1)
     player_keys.append(key_2)
     player_keys.append(key_3)
     player_keys.append(key_4)
-    for key in player_keys:
-        player_key_x_pos.append(key.x_pos)
-
+    
     while running:
         delta_time = clock.tick(constants.FPS) / 1000.0
         running = game_loop(screen, delta_time, context)
@@ -65,7 +68,7 @@ def game_loop(screen: pygame.Surface, delta_time: float, context: GameContext) -
             
     screen.fill(constants.BACKGROUND_COLOR)
     context.notes_group.draw(screen)
-
+    
     for key in player_keys:
         key.draw(key.key_type, screen)
 

@@ -27,19 +27,29 @@ def rect_distance(rect1: pygame.Rect, rect2: pygame.Rect) -> float:
     return ((rect2.centerx - rect1.centerx) ** 2 + (rect2.centery - rect1.centery) ** 2) ** 0.5
 
 
-def key_padding(screen: pygame.Surface) -> int:
+def key_padding() -> int:
     """
     Calculates the padding around the keys.
-    :param screen: Surface for image optimization.
     :return: Pixel width of padding.
     """
-
+    
     screen_width: int = constants.SCREEN_WIDTH
-    key_spacing = constants.KEY_SPACING
-    image = pygame.image.load(os.path.join(constants.ASSET_DIRECTORY, "grey_circle.png")).convert_alpha(screen)
-    image = pygame.transform.scale(image, scale_size(image.get_size(), (2 / 3)))
-    key_rect_left: int = key_spacing - image.get_width() // 2
-    key_rect_right: int = (key_spacing * 4) + image.get_width() // 2
-    key_rect_width: int = key_rect_right - key_rect_left
+    key_spacing: int = constants.KEY_SPACING
+    
+    key_rect_right: int = (constants.CIRCLE_KEY_WIDTH) + key_spacing * 3
+    
+    return (screen_width - key_rect_right) // 2
 
-    return (screen_width - key_rect_width) // (key_spacing // (15))
+
+def key_direction() -> int:
+    """
+    Returns the y position for the keys depending on the 
+    scroll direction set in settings.
+
+    Returns:
+        int: Y position.
+    """
+    return constants.KEY_DOWN_Y_POS if settings.downscroll else constants.KEY_UP_Y_POS
+
+def note_start_pos() -> int:
+    return -60 if settings.downscroll else constants.SCREEN_HEIGHT + 60

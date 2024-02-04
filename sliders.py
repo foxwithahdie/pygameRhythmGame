@@ -1,12 +1,12 @@
 import pygame
-from typing import Union, Any
+from typing import Any
 from pygame.sprite import Sprite
 import helpers
 
 
 class Slider(Sprite):
     def __init__(self, x_pos: int, y_pos: int, value: Any, scale: int, step: int, *groups,
-                 screen_hint: Union[pygame.Surface, None] = None):
+                 screen_hint: pygame.Surface | None = None):
         super().__init__()
         self.x_pos = x_pos
         self.y_pos = y_pos

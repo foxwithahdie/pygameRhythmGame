@@ -1,12 +1,12 @@
 import os
 from enum import Enum
-from typing import Union, Any
 
 import pygame
 from pygame.sprite import Sprite
 
 import constants
 import helpers
+import settings
 
 
 class NoteSpriteType(Enum):
@@ -47,14 +47,17 @@ class NoteSprite(Sprite):
     """
 
     def __init__(self, note_type: NoteSpriteType, x_pos: int, *groups,
-                 surface_hint: Union[pygame.Surface, None] = None):
+                 surface_hint: pygame.Surface | None = None):
         super().__init__(*groups)
         if surface_hint is not None:
             self.image = pygame.image.load(note_type.circle_image).convert_alpha(surface_hint)
         else:
             self.image = pygame.image.load(note_type.circle_image).convert_alpha()
         self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2/3))
-        self.rect = self.image.get_rect(centerx=x_pos)
+        self.rect = self.image.get_rect(center=(x_pos, helpers.note_start_pos()))
 
     def update(self, delta_time: float) -> None:
-        self.rect.centery += int(delta_time * constants.SCROLL_SPEED)
+        if settings.downscroll:
+            self.rect.centery += int(delta_time * constants.SCROLL_SPEED)
+        else:
+            self.rect.centery -= int(delta_time * constants.SCROLL_SPEED)
