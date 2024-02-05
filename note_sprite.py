@@ -124,6 +124,6 @@ class NoteSprite(Sprite):
 
     def update(self, delta_time: float) -> None:
         if settings.downscroll:
-            self.rect.centery += int(delta_time * constants.SCROLL_SPEED)
+            self.rect.centery += int(delta_time * settings.scroll_speed)
         else:
-            self.rect.centery -= int(delta_time * constants.SCROLL_SPEED)
+            self.rect.centery -= int(delta_time * settings.scroll_speed)
