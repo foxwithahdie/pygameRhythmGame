@@ -10,7 +10,7 @@ import helpers
 pygame.display.init()
 
 
-class KeySpriteType(Enum):
+class CircleKeySpriteType(Enum):
     """
     An enum representing the type (color) of a key sprite.
     """
@@ -21,26 +21,110 @@ class KeySpriteType(Enum):
     BLUE = 4
 
     @property
-    def grey_circle_image(self) -> str:
+    def grey_key_image(self) -> str:
         return os.path.join(constants.ASSET_DIRECTORY, "grey_circle.png")
 
     @property
-    def dull_circle_image(self) -> str:
+    def dull_key_image(self) -> str:
         directory = constants.ASSET_DIRECTORY
 
         match self:
-            case KeySpriteType.YELLOW:
+            case CircleKeySpriteType.YELLOW:
                 file_name = "yellow_circle_dull.png"
-            case KeySpriteType.PURPLE:
+            case CircleKeySpriteType.PURPLE:
                 file_name = "purple_circle_dull.png"
-            case KeySpriteType.RED:
+            case CircleKeySpriteType.RED:
                 file_name = "red_circle_dull.png"
-            case KeySpriteType.BLUE:
+            case CircleKeySpriteType.BLUE:
                 file_name = "blue_circle_dull.png"
             case _:
                 raise ValueError(f"Invalid key type: {self}")
 
         return os.path.join(directory, file_name)
+
+   
+class ArrowKeySpriteType(Enum):
+    """
+    An enum representing the type (color) of a key sprite.
+    """
+
+    YELLOW = 1
+    PURPLE = 2
+    RED = 3
+    BLUE = 4
+    
+
+    @property
+    def grey_key_image(self) -> str:
+        directory = constants.ASSET_DIRECTORY
+        
+        match self:
+            case ArrowKeySpriteType.YELLOW:
+                file_name = 'grey_left_arrow.png'
+            case ArrowKeySpriteType.PURPLE:
+                file_name = 'grey_down_arrow.png'
+            case ArrowKeySpriteType.RED:
+                file_name = 'grey_up_arrow.png'
+            case ArrowKeySpriteType.BLUE:
+                file_name = 'grey_right_arrow.png'
+            case _:
+                raise ValueError(f"Invalid key type: {self}")
+            
+        return os.path.join(directory, file_name)
+
+    @property
+    def dull_key_image(self) -> str:
+        directory = constants.ASSET_DIRECTORY
+
+        match self:
+            case ArrowKeySpriteType.YELLOW:
+                file_name = "yellow_left_arrow_dull.png"
+            case ArrowKeySpriteType.PURPLE:
+                file_name = "purple_down_arrow_dull.png"
+            case ArrowKeySpriteType.RED:
+                file_name = "red_up_arrow_dull.png"
+            case ArrowKeySpriteType.BLUE:
+                file_name = "blue_right_arrow_dull.png"
+            case _:
+                raise ValueError(f"Invalid key type: {self}")
+
+        return os.path.join(directory, file_name)
+    
+
+class BarKeySpriteType(Enum):
+    """
+    An enum representing the type (color) of a key sprite.
+    """
+
+    YELLOW = 1
+    PURPLE = 2
+    RED = 3
+    BLUE = 4
+
+    @property
+    def grey_key_image(self) -> str:
+        return os.path.join(constants.ASSET_DIRECTORY, "grey_bar.png")
+
+    @property
+    def dull_key_image(self) -> str:
+        directory = constants.ASSET_DIRECTORY
+
+        match self:
+            case BarKeySpriteType.YELLOW:
+                file_name = "yellow_bar_dull.png"
+            case BarKeySpriteType.PURPLE:
+                file_name = "purple_bar_dull.png"
+            case BarKeySpriteType.RED:
+                file_name = "red_bar_dull.png"
+            case BarKeySpriteType.BLUE:
+                file_name = "blue_bar_dull.png"
+            case _:
+                raise ValueError(f"Invalid key type: {self}")
+
+        return os.path.join(directory, file_name)
+
+
+type KeySpriteType = CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType
 
 
 class KeySprite(Sprite):
@@ -50,9 +134,9 @@ class KeySprite(Sprite):
         self.key_type = key_type
         self.x_pos = x_pos
         if screen_hint is not None:
-            self.image = pygame.image.load(key_type.grey_circle_image).convert_alpha(screen_hint)
+            self.image = pygame.image.load(key_type.grey_key_image).convert_alpha(screen_hint)
         else:
-            self.image = pygame.image.load(key_type.grey_circle_image).convert_alpha()
+            self.image = pygame.image.load(key_type.grey_key_image).convert_alpha()
         self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
         self.rect = self.image.get_rect(center=(self.x_pos, helpers.key_direction()))
         self.key = pygame.key.key_code(key)
@@ -73,12 +157,12 @@ class KeySprite(Sprite):
     def change_keybind(self, key: str) -> None:
         self.key = pygame.key.key_code(key)
     
-    def draw(self, key_type: KeySpriteType, surface: pygame.Surface) -> None:
+    def draw(self, key_type: CircleKeySpriteType, surface: pygame.Surface) -> None:
         if self.keydown:
-            self.image = pygame.image.load(self.key_type.dull_circle_image).convert_alpha(surface)
+            self.image = pygame.image.load(self.key_type.dull_key_image).convert_alpha(surface)
             self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
             surface.blit(self.image, self.rect)
         else:
-            self.image = pygame.image.load(key_type.grey_circle_image).convert_alpha(surface)
+            self.image = pygame.image.load(key_type.grey_key_image).convert_alpha(surface)
             self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
             surface.blit(self.image, self.rect)

@@ -12,3 +12,6 @@ class GameContext:
     song_selection: pygame.sprite.Group = pygame.sprite.Group()
     main_menu: pygame.sprite.Group = pygame.sprite.Group()
     
+
+game_active: bool = True
+    
