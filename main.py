@@ -5,7 +5,7 @@ import game_context
 from key_sprite import KeySprite, CircleKeySpriteType, ArrowKeySpriteType, BarKeySpriteType
 from note_sprite import NoteSprite, CircleSpriteType, ArrowSpriteType, BarSpriteType
 
-# player_keys: list[KeySprite]
+# * player_keys: list[KeySprite]
 global player_keys
 
 
