@@ -2,7 +2,8 @@
 
 Rhythm Game using Pygame.
 
-To install and use this Rhythm game, you must have the Pygame library already installed onto your interpreter. Read pygame.org for more details.
+To install and use this Rhythm game, you must have the Pygame library already installed onto your interpreter, and your int. Read pygame.org for more details.
+To install and use this Rhythm game, you must be on Python 3.12.
 
 v3.0:
 
@@ -13,9 +14,9 @@ Additions to this version:
     - Better Menu
     - Song selection?
 
-Current Status: Complete restart
+Current Status: Note pressing and note falling work
 
 To Do:
-- [ ] Create a function for key padding and lane offset
+- [ ] Work on JSON format for mapping
 - [ ] Start implementing sliders and settings
 - [ ] Song menu
