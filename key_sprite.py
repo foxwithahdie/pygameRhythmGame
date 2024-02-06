@@ -151,13 +151,13 @@ class KeySprite(Sprite):
     """
     A sprite representing the key that the user presses.
     """
-    def __init__(self, key_type: KeySpriteType, x_pos: int, key: str, *groups,
+    def __init__(self, key_type: KeySpriteType, note_pos: int, key: str, *groups,
                  screen_hint: pygame.Surface | None = None):
         super().__init__(*groups)
         self.key_type = key_type
-        key_spacing = constants.KEY_SPACING * (x_pos - 1)
+        key_spacing = constants.KEY_SPACING * (note_pos - 1)
         if isinstance(key_type, ArrowKeySpriteType):
-            self.x_pos = helpers.key_padding(key_type, arrow_dir=x_pos) + (key_type.key_size(x_pos) // 2)
+            self.x_pos = helpers.key_padding(key_type, arrow_dir=note_pos) + (key_type.key_size(note_pos) // 2)
             self.x_pos += key_spacing
         else:
             self.x_pos = helpers.key_padding(key_type) + (key_type.key_size() // 2) + key_spacing
