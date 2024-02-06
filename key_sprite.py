@@ -9,10 +9,12 @@ import helpers
 
 pygame.display.init()
 
+type KeySpriteType = CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType
+
 
 class CircleKeySpriteType(Enum):
     """
-    An enum representing the type (color) of a key sprite.
+    An enum representing the type (color) of a circle key sprite.
     """
 
     YELLOW = 1
@@ -42,10 +44,14 @@ class CircleKeySpriteType(Enum):
 
         return os.path.join(directory, file_name)
 
+    @classmethod
+    def key_size(cls) -> int:
+        return constants.CIRCLE_KEY_WIDTH
+
    
 class ArrowKeySpriteType(Enum):
     """
-    An enum representing the type (color) of a key sprite.
+    An enum representing the type (color) of an arrow key sprite.
     """
 
     YELLOW = 1
@@ -53,7 +59,6 @@ class ArrowKeySpriteType(Enum):
     RED = 3
     BLUE = 4
     
-
     @property
     def grey_key_image(self) -> str:
         directory = constants.ASSET_DIRECTORY
@@ -90,10 +95,24 @@ class ArrowKeySpriteType(Enum):
 
         return os.path.join(directory, file_name)
     
+    @classmethod
+    def key_size(cls, arrow_dir: int) -> int:
+        match arrow_dir:
+            case 1:
+                return constants.ARROW_LEFT_KEY_WIDTH
+            case 2:
+                return constants.ARROW_DOWN_KEY_WIDTH
+            case 3:
+                return constants.ARROW_UP_KEY_WIDTH
+            case 4:
+                return constants.ARROW_RIGHT_KEY_WIDTH
+            case _:
+                raise NameError(f"Invalid key number. There are only 4 keys!")
+
 
 class BarKeySpriteType(Enum):
     """
-    An enum representing the type (color) of a key sprite.
+    An enum representing the type (color) of a bar key sprite.
     """
 
     YELLOW = 1
@@ -123,21 +142,34 @@ class BarKeySpriteType(Enum):
 
         return os.path.join(directory, file_name)
 
-
-type KeySpriteType = CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType
+    @classmethod
+    def key_size(cls) -> int:
+        return constants.BAR_KEY_WIDTH
 
 
 class KeySprite(Sprite):
+    """
+    A sprite representing the key that the user presses.
+    """
     def __init__(self, key_type: KeySpriteType, x_pos: int, key: str, *groups,
                  screen_hint: pygame.Surface | None = None):
         super().__init__(*groups)
         self.key_type = key_type
-        self.x_pos = x_pos
-        if screen_hint is not None:
-            self.image = pygame.image.load(key_type.grey_key_image).convert_alpha(screen_hint)
+        key_spacing = constants.KEY_SPACING * (x_pos - 1)
+        if isinstance(key_type, ArrowKeySpriteType):
+            self.x_pos = helpers.key_padding(key_type, arrow_dir=x_pos) + (key_type.key_size(x_pos) // 2)
+            self.x_pos += key_spacing
         else:
-            self.image = pygame.image.load(key_type.grey_key_image).convert_alpha()
-        self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
+            self.x_pos = helpers.key_padding(key_type) + (key_type.key_size() // 2) + key_spacing
+
+        if screen_hint is not None:
+            self.image = helpers.transform_image(
+                pygame.image.load(key_type.grey_key_image).convert_alpha(screen_hint), (2 / 3)
+            )
+        else:
+            self.image = helpers.transform_image(
+                pygame.image.load(key_type.grey_key_image).convert_alpha(), (2 / 3)
+            )
         self.rect = self.image.get_rect(center=(self.x_pos, helpers.key_direction()))
         self.key = pygame.key.key_code(key)
         self.keydown = False
@@ -151,18 +183,19 @@ class KeySprite(Sprite):
             self.keydown = False
             self.rect.center = (self.x_pos, helpers.key_direction())
     
-    def update_x_pos(self, x_position: int) -> None:
-        self.x_pos = x_position
-    
     def change_keybind(self, key: str) -> None:
         self.key = pygame.key.key_code(key)
     
     def draw(self, key_type: CircleKeySpriteType, surface: pygame.Surface) -> None:
         if self.keydown:
-            self.image = pygame.image.load(self.key_type.dull_key_image).convert_alpha(surface)
-            self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
+            self.image = helpers.transform_image(
+                pygame.image.load(self.key_type.dull_key_image).convert_alpha(surface), (2 / 3)
+            )
+            self.rect = self.image.get_rect(center=(self.x_pos, helpers.key_direction()))
             surface.blit(self.image, self.rect)
         else:
-            self.image = pygame.image.load(key_type.grey_key_image).convert_alpha(surface)
-            self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
+            self.image = helpers.transform_image(
+                pygame.image.load(key_type.grey_key_image).convert_alpha(surface), (2 / 3)
+            )
+            self.rect = self.image.get_rect(center=(self.x_pos, helpers.key_direction()))
             surface.blit(self.image, self.rect)

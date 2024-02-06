@@ -2,10 +2,11 @@ import pygame
 import constants
 import helpers
 import game_context
+import settings
 from key_sprite import KeySprite, CircleKeySpriteType, ArrowKeySpriteType, BarKeySpriteType
 from note_sprite import NoteSprite, CircleSpriteType, ArrowSpriteType, BarSpriteType
 
-# player_keys: list[KeySprite]
+# * player_keys: list[KeySprite]
 global player_keys
 
 
@@ -20,32 +21,23 @@ def main() -> None:
     context = game_context.GameContext()
 
     global player_keys
+    player_keys = []
 
     NoteSprite(CircleSpriteType.BLUE, constants.SCREEN_WIDTH // 2, context.notes_group, surface_hint=screen)
     
-    player_keys = []
-    
-    player_key_x_pos = []
-    
-    key_1: KeySprite = KeySprite(CircleKeySpriteType.YELLOW, (helpers.key_padding() + constants.CIRCLE_KEY_WIDTH // 2),
-                                 "d", context.key_group, screen_hint=screen)
-    key_2: KeySprite = KeySprite(CircleKeySpriteType.RED, 
-                                 (helpers.key_padding() + constants.CIRCLE_KEY_WIDTH // 2 + constants.KEY_SPACING),
-                                 "f", context.key_group, screen_hint=screen)
-    key_3: KeySprite = KeySprite(CircleKeySpriteType.PURPLE, 
-                                 (helpers.key_padding() + constants.CIRCLE_KEY_WIDTH // 2 + constants.KEY_SPACING * 2),
-                                 "j", context.key_group, screen_hint=screen)
-    key_4: KeySprite = KeySprite(CircleKeySpriteType.BLUE, 
-                                 (helpers.key_padding() + constants.CIRCLE_KEY_WIDTH // 2 + constants.KEY_SPACING * 3),
-                                 "k", context.key_group, screen_hint=screen)
-    
-    player_keys.append(key_1)
-    player_keys.append(key_2)
-    player_keys.append(key_3)
-    player_keys.append(key_4)
-    
+    key_1: KeySprite = KeySprite(CircleKeySpriteType.YELLOW, 1, "d",
+                                 context.key_group, screen_hint=screen)
+    key_2: KeySprite = KeySprite(CircleKeySpriteType.RED, 2, "f",
+                                 context.key_group, screen_hint=screen)
+    key_3: KeySprite = KeySprite(CircleKeySpriteType.PURPLE, 3, "j",
+                                 context.key_group, screen_hint=screen)
+    key_4: KeySprite = KeySprite(CircleKeySpriteType.BLUE, 4, "k",
+                                 context.key_group, screen_hint=screen)
+
+    player_keys.extend([key_1, key_2, key_3, key_4])
+
     while running:
-        delta_time = clock.tick(constants.FPS) / 1000.0
+        delta_time = clock.tick(settings.fps) / 1000.0
         running = game_loop(screen, delta_time, context)
         pygame.display.flip()
 
