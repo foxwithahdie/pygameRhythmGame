@@ -1,9 +1,8 @@
+from typing import Optional
 import pygame
 import constants
 import settings
 from key_sprite import CircleKeySpriteType, ArrowKeySpriteType, BarKeySpriteType
-
-type KeySpriteType = CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType
 
 
 def scale_size(size: tuple[int, int], scale: float) -> tuple[int, int]:
@@ -38,7 +37,8 @@ def rect_distance(rect1: pygame.Rect, rect2: pygame.Rect) -> float:
     return ((rect2.centerx - rect1.centerx) ** 2 + (rect2.centery - rect1.centery) ** 2) ** 0.5
 
 
-def key_padding(key_type: KeySpriteType, arrow_dir: int | None = None) -> int:
+def key_padding(key_type: CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType,
+                arrow_dir: Optional[int] = None) -> int:
     """
     Calculates the padding around the keys.
     :param key_type: Type of key
@@ -49,9 +49,9 @@ def key_padding(key_type: KeySpriteType, arrow_dir: int | None = None) -> int:
     screen_width: int = constants.SCREEN_WIDTH
     key_spacing: int = constants.KEY_SPACING
     if isinstance(key_type, ArrowKeySpriteType):
-        key_rect_right: int = key_type.key_size(arrow_dir) + key_spacing * 3
+        key_rect_right: int = key_type.key_size(arrow_dir=arrow_dir) + key_spacing * 3
     else:
-        key_rect_right: int = key_type.key_size() + key_spacing * 3
+        key_rect_right = key_type.key_size + key_spacing * 3
 
     return (screen_width - key_rect_right) // 2
 

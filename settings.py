@@ -1,7 +1,7 @@
-lane_offset = 1
+lane_offset: float = 1.0
 
-scroll_speed = 1
+scroll_speed: float = 3.0
 
-fps = 60
+fps: int = 60
 
-downscroll = True
+downscroll: bool = True
