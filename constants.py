@@ -1,29 +1,18 @@
 import pygame
-import os
-import helpers
 import settings
 
-pygame.init()
+WINDOW_TITLE: str = "Rhythm Game"
 
+SCREEN_WIDTH: int = 800
+SCREEN_HEIGHT: int = 600
 
-WINDOW_TITLE = "Rhythm Game"
+BACKGROUND_COLOR: pygame.Color = pygame.Color(255, 255, 255)
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+ASSET_DIRECTORY: str = "Assets"
 
-pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+KEY_DOWN_Y_POS: int = 520
+KEY_UP_Y_POS: int = 80
 
-FPS = 60
+SCROLL_SPEED: float = settings.fps * settings.scroll_speed
 
-BACKGROUND_COLOR = pygame.Color(255, 255, 255)
-
-ASSET_DIRECTORY = "Assets"
-
-KEY_DOWN_Y_POS = 520
-KEY_UP_Y_POS = 80
-
-CIRCLE_KEY = pygame.image.load(os.path.join(ASSET_DIRECTORY, "grey_circle.png")).convert_alpha()
-CIRCLE_KEY = pygame.transform.scale(CIRCLE_KEY, helpers.scale_size(CIRCLE_KEY.get_size(), (2 / 3)))
-CIRCLE_KEY_WIDTH = CIRCLE_KEY.get_width()
-
-KEY_SPACING = int(150 * settings.lane_offset)
+KEY_SPACING: int = int(150 * settings.lane_offset)
