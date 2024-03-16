@@ -2,7 +2,7 @@
 
 Rhythm Game using Pygame.
 
-To install this Rhythm Game, enter pip install -e . while in the folder to install all the dependencies for this project.
+To install this Rhythm Game, enter `pip install -e .` while in the folder to install all the dependencies for this project.
 
 v3.0:
 
