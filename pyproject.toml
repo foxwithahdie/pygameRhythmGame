@@ -1,0 +1,4 @@
+[project]
+name="pygameRhythmGame"
+version="3.0"
+dependencies=["pygame==2.5.2",]

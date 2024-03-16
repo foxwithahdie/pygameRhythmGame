@@ -3,7 +3,7 @@
         {
             "type": "python",
             "name": "Pygame config",
-            "file": "main.py",
+            "file": "src/main.py",
             "arguments": [],
         },
         

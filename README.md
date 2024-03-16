@@ -2,8 +2,7 @@
 
 Rhythm Game using Pygame.
 
-To install and use this Rhythm game, you must have the Pygame library already installed onto your interpreter, and your int. Read pygame.org for more details.
-To install and use this Rhythm game, you must be on Python 3.12.
+To install this Rhythm Game, enter pip install -e . while in the folder to install all the dependencies for this project.
 
 v3.0:
 
