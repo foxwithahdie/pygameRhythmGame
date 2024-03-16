@@ -191,7 +191,7 @@ class KeySprite(sprite.Sprite):
         self.event = pygame.event.custom_type()
         self.keydown = False
 
-    def press_button(self, event: pygame.event.Event, delta_time: pygame.time.Clock()) -> None:
+    def press_button(self, event: pygame.event.Event, delta_time: float) -> None:
         global start_time, elapsed_time, note_intersected
         elapsed_time = 0
         note_intersection = sprite.spritecollideany(self, GameContext.notes_group)
@@ -199,7 +199,7 @@ class KeySprite(sprite.Sprite):
         if note_intersection and not note_intersected:
             print(f"{note_intersection}")
             note_intersected = not note_intersected
-            pygame.time.set_timer(self.event, self.key_type.key_size // int(delta_time * constants.SCROLL_SPEED))
+            pygame.time.set_timer(self.event, (self.key_type.key_size) // int(delta_time * constants.SCROLL_SPEED))
             start_time = pygame.time.get_ticks()
         if event.type == pygame.KEYDOWN:
             if event.key == self.key:

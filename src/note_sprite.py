@@ -137,7 +137,7 @@ class BarSpriteType(Enum):
         return os.path.join(constants.ASSET_DIRECTORY, file_name)
 
     @property
-    def key_size(self) -> int:
+    def note_size(self) -> int:
         directory = constants.ASSET_DIRECTORY
         bar_note: pygame.Surface = helpers.transform_image(pygame.image.load(
             os.path.join(directory, "grey_bar.png")).convert_alpha(), (2 / 3))

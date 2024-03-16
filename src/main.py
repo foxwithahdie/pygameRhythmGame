@@ -72,7 +72,6 @@ def game_loop(screen: pygame.Surface, delta_time: float, context: game_context.G
         context.notes_group.draw(screen)
         context.notes_group.update(delta_time)
 
-    
     return True
 
 
