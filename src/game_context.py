@@ -14,4 +14,7 @@ class GameContext:
     
 
 game_active: bool = True
-    
+
+
+class AppScope:
+    player_keys: list

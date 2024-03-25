@@ -120,7 +120,7 @@ class ArrowKeySpriteType(Enum):
                     os.path.join(directory, "grey_right_arrow.png")).convert_alpha(), (2 / 3))
                 return arrow_right_key.get_width()
             case _:
-                raise ValueError(f"Invalid key number {arrow_dir}. There are only 4 keys!")
+                raise ValueError(f"Invalid key number {arrow_dir}. There are only 4 types of keys!")
 
 
 class BarKeySpriteType(Enum):
@@ -171,6 +171,7 @@ class KeySprite(sprite.Sprite):
                  *groups, screen_hint: Optional[pygame.Surface] = None):
         super().__init__(*groups)
         self.key_type = key_type
+        self.note_pos = note_pos
         key_spacing = constants.KEY_SPACING * (note_pos - 1)
         if isinstance(key_type, ArrowKeySpriteType):
             self.x_pos = helpers.key_padding(key_type, arrow_dir=note_pos) + (key_type.key_size(note_pos) // 2)
@@ -186,44 +187,56 @@ class KeySprite(sprite.Sprite):
             self.image = helpers.transform_image(
                 pygame.image.load(key_type.grey_key_image).convert_alpha(), (2 / 3)
             )
-        self.rect = self.image.get_rect(center=(self.x_pos, helpers.key_direction()))
-        self.key = pygame.key.key_code(key)
+        self.rect: pygame.Rect = self.image.get_rect(center=(self.x_pos, helpers.key_direction()))
+        self.key: int = pygame.key.key_code(key)
         self.event = pygame.event.custom_type()
-        self.keydown = False
+        self.keydown: bool = False
+        self.note_intersected: bool = False
+        self.start_time: float = 0.0
 
     def press_button(self, event: pygame.event.Event, delta_time: float) -> None:
-        global start_time, elapsed_time, note_intersected
-        elapsed_time = 0
+        
         note_intersection = sprite.spritecollideany(self, GameContext.notes_group)
-        note_intersected = False
-        if note_intersection and not note_intersected:
-            print(f"{note_intersection}")
-            note_intersected = not note_intersected
-            pygame.time.set_timer(self.event, (self.key_type.key_size) // int(delta_time * constants.SCROLL_SPEED))
-            start_time = pygame.time.get_ticks()
+        
+        if note_intersection and not self.note_intersected:
+            self.note_intersected = True
+            self.start_time = delta_time
+            print(f'at note_intersection: {self.start_time}')
+            if isinstance(self.key_type, ArrowKeySpriteType):
+                pygame.time.set_timer(self.event, 
+                    (self.key_type.key_size(arrow_dir=self.note_pos)) // int(delta_time * constants.SCROLL_SPEED)
+                )
+            else:
+                pygame.time.set_timer(self.event, 
+                    (self.key_type.key_size) // int(delta_time * constants.SCROLL_SPEED)
+                )     
+        
         if event.type == pygame.KEYDOWN:
             if event.key == self.key:
                 self.keydown = True
                 self.rect.center = (self.x_pos, helpers.key_direction())
         if event.type == pygame.KEYUP:
-            # elapsed_time = pygame.time.get_ticks() - start_time
             self.keydown = False
             self.rect.center = (self.x_pos, helpers.key_direction())
-
-        if event.type == self.event and not self.keydown:
-
-            elapsed_time = pygame.time.get_ticks() - start_time
-            print(f"{start_time=}")
-            print(f"{elapsed_time=}")
-            print(f"{pygame.time.get_ticks()=}")
-
-            sprite.spritecollide(self, GameContext.notes_group, True)
-            pygame.time.set_timer(self.event, 0)
+        if event.type == self.event:
+            if not self.keydown:
+                print(f'{self.start_time * 1000 =}')
+                print(f'{delta_time * 1000 =}')
+                elapsed_time = ((delta_time * 1000) - (self.start_time * 1000))
+                print(elapsed_time)
+                
+                sprite.spritecollide(self, GameContext.notes_group, True)
+                self.note_intersected = False
+                pygame.time.set_timer(self.event, 0)
+                    
+        if self.note_intersected and not note_intersection:
+            # miss
+            self.note_intersected = False
 
     def change_keybind(self, key: str) -> None:
         self.key = pygame.key.key_code(key)
     
-    def draw(self, key_type: CircleKeySpriteType, surface: pygame.Surface) -> None:
+    def draw(self, key_type: CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType, surface: pygame.Surface) -> None:
         if self.keydown:
             self.image = helpers.transform_image(
                 pygame.image.load(self.key_type.dull_key_image).convert_alpha(surface), (2 / 3)
