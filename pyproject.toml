@@ -1,4 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name="pygameRhythmGame"
-version="3.0"
-dependencies=["pygame==2.5.2",]
+name = "pygameRhythmGame"
+version = "3.0"
+dependencies = ["pygame==2.6.0"]
+requires-python = ">=3.11"
+readme = "README.md"
+
+[project.optional-dependencies]
+dev = [
+    "pygame==2.6.0.dev2",
+    'mypy',
+    'pygame-hotreload==0.0.32',
+    'black'
+]
