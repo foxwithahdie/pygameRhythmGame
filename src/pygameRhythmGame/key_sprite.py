@@ -1,4 +1,5 @@
 import os
+import time
 from enum import Enum
 from typing import NoReturn, Optional
 
@@ -6,8 +7,8 @@ import pygame
 from game_context import GameContext
 import pygame.sprite as sprite
 
-import constants as constants
-import helpers as helpers
+import constants
+import helpers
 
 pygame.display.init()
 
@@ -28,6 +29,14 @@ class CircleKeySpriteType(Enum):
 
     @property
     def dull_key_image(self) -> str | NoReturn:
+        """Returns the file name of the dull key.
+
+        Raises:
+            ValueError: Raises if it is not a defined instance of the circle key sprite type.
+
+        Returns:
+            str | NoReturn: Will return the file name of the key type, otherwise will raise an error.
+        """
         directory = constants.ASSET_DIRECTORY
 
         match self:
@@ -64,6 +73,13 @@ class ArrowKeySpriteType(Enum):
     
     @property
     def grey_key_image(self) -> str | NoReturn:
+        """Returns the grey version of the certain arrow key.
+        Raises:
+            ValueError: Raises if it is not a defined instance of the arrow key sprite type.
+
+        Returns:
+            str | NoReturn: Returns the grey key image file name, raises an error otherwise.
+        """
         directory = constants.ASSET_DIRECTORY
         
         match self:
@@ -82,6 +98,14 @@ class ArrowKeySpriteType(Enum):
 
     @property
     def dull_key_image(self) -> str | NoReturn:
+        """Returns the file name of the dull key image of a certain arrow key.
+
+        Raises:
+            ValueError: Raises if it is not a defined instance of the arrow key sprite type.
+
+        Returns:
+            str | NoReturn: Returns the file name, otherwise raises an error.
+        """
         directory = constants.ASSET_DIRECTORY
 
         match self:
@@ -100,6 +124,18 @@ class ArrowKeySpriteType(Enum):
     
     @classmethod
     def key_size(cls, arrow_dir: Optional[int] = None) -> int | NoReturn:
+        """Gives the width of the key of a specific arrow direction.
+            Creates an instance of the key surface and returns the width.
+
+        Args:
+            arrow_dir (Optional[int], optional): The direction of the arrow key. Defaults to None. 1 -> Left, 2 -> Down, 3 -> Up, 4 -> Right.
+                
+        Raises:
+            ValueError: Raises if it is not a defined direction of the arrow key sprite type.
+
+        Returns:
+            int | NoReturn: Returns the width of the key, otherwise raises an error.
+        """
         directory = constants.ASSET_DIRECTORY
 
         match arrow_dir:
@@ -139,6 +175,14 @@ class BarKeySpriteType(Enum):
 
     @property
     def dull_key_image(self) -> str | NoReturn:
+        """Returns the file name of the dull bar key image.
+
+        Raises:
+            ValueError: Raises if it is not a defined instance of the bar key sprite type.
+
+        Returns:
+            str | NoReturn: The file name of the specific bar key instance, otherwise raises an error.
+        """
         directory = constants.ASSET_DIRECTORY
 
         match self:
@@ -167,8 +211,8 @@ class KeySprite(sprite.Sprite):
     """
     A sprite representing the key that the user presses.
     """
-    def __init__(self, key_type: CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType, note_pos: int, key: str,
-                 *groups, screen_hint: Optional[pygame.Surface] = None):
+    def __init__(self, key_type: CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType, note_pos: int,
+                 key: str, *groups, screen_hint: Optional[pygame.Surface] = None):
         super().__init__(*groups)
         self.key_type = key_type
         self.note_pos = note_pos
@@ -196,12 +240,12 @@ class KeySprite(sprite.Sprite):
 
     def press_button(self, event: pygame.event.Event, delta_time: float) -> None:
         
-        note_intersection = sprite.spritecollideany(self, GameContext.notes_group)
+        note_intersection = sprite.spritecollide(self, GameContext.notes_group, False) # sprite.spritecollideany(self, GameContext.notes_group)
         
         if note_intersection and not self.note_intersected:
             self.note_intersected = True
-            self.start_time = delta_time
-            print(f'at note_intersection: {self.start_time}')
+            self.start_time = time.time()
+            print(f'at note_intersection: {self.start_time}') # debug
             if isinstance(self.key_type, ArrowKeySpriteType):
                 pygame.time.set_timer(self.event, 
                     (self.key_type.key_size(arrow_dir=self.note_pos)) // int(delta_time * constants.SCROLL_SPEED)
@@ -220,10 +264,10 @@ class KeySprite(sprite.Sprite):
             self.rect.center = (self.x_pos, helpers.key_direction())
         if event.type == self.event:
             if not self.keydown:
-                print(f'{self.start_time * 1000 =}')
-                print(f'{delta_time * 1000 =}')
-                elapsed_time = ((delta_time * 1000) - (self.start_time * 1000))
-                print(elapsed_time)
+                print(f'{self.start_time * 1000 =}ms') # debug
+                print(f'{delta_time * 1000 =}ms') # debug
+                elapsed_time = ((time.time()) - (self.start_time))
+                print(f"{elapsed_time = }") # debug
                 
                 sprite.spritecollide(self, GameContext.notes_group, True)
                 self.note_intersected = False
@@ -237,6 +281,12 @@ class KeySprite(sprite.Sprite):
         self.key = pygame.key.key_code(key)
     
     def draw(self, key_type: CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType, surface: pygame.Surface) -> None:
+        """Draws the key onto the surface.
+
+        Args:
+            key_type (CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType): The type of key that would be drawn, so you can draw the different images based on if it is pressed.
+            surface (pygame.Surface): Where to draw the key.
+        """
         if self.keydown:
             self.image = helpers.transform_image(
                 pygame.image.load(self.key_type.dull_key_image).convert_alpha(surface), (2 / 3)

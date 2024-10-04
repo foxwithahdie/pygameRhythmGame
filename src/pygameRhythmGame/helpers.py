@@ -1,7 +1,7 @@
 from typing import Optional
 import pygame
-import constants as constants
-import settings as settings
+import constants
+import settings
 from key_sprite import CircleKeySpriteType, ArrowKeySpriteType, BarKeySpriteType
 
 

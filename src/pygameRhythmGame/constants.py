@@ -1,6 +1,6 @@
 import pygame
 import os
-import settings as settings
+import settings
 
 WINDOW_TITLE: str = "Rhythm Game"
 

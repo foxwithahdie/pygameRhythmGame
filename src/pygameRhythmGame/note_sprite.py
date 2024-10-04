@@ -5,9 +5,10 @@ from typing import NoReturn, Optional
 import pygame
 import pygame.sprite as sprite
 
-import constants as constants
-import helpers as helpers
-import settings as settings
+import constants
+import helpers
+import settings
+from key_sprite import CircleKeySpriteType, ArrowKeySpriteType, BarKeySpriteType
 
 
 class CircleSpriteType(Enum):
@@ -43,6 +44,11 @@ class CircleSpriteType(Enum):
 
     @property
     def note_size(self) -> int:
+        """_summary_
+
+        Returns:
+            int: _description_
+        """
         directory = constants.ASSET_DIRECTORY
         circle_note: pygame.Surface = helpers.transform_image(pygame.image.load(
             os.path.join(directory, "grey_circle.png")).convert_alpha(), (2 / 3))
@@ -82,6 +88,10 @@ class ArrowSpriteType(Enum):
 
     @property
     def note_size(self) -> int | NoReturn:
+        """
+        The size of the note for the specific note type.
+        :return: The integer size of the note type.
+        """
         directory = constants.ASSET_DIRECTORY
 
         match self:
@@ -138,10 +148,64 @@ class BarSpriteType(Enum):
 
     @property
     def note_size(self) -> int:
+        """_summary_
+
+        Returns:
+            int: _description_
+        """
         directory = constants.ASSET_DIRECTORY
         bar_note: pygame.Surface = helpers.transform_image(pygame.image.load(
             os.path.join(directory, "grey_bar.png")).convert_alpha(), (2 / 3))
         return bar_note.get_width()
+
+
+class Lane(Enum):
+    YELLOW_LANE = 1
+    PURPLE_LANE = 2
+    RED_LANE = 3
+    BLUE_LANE = 4
+    
+    @property
+    def circle_x_position(self) -> int:
+        match self:
+            case Lane.YELLOW_LANE:
+                return helpers.key_padding(CircleKeySpriteType.YELLOW) + (CircleKeySpriteType.YELLOW.key_size // 2) + constants.KEY_SPACING * 0
+            case Lane.PURPLE_LANE:
+                return helpers.key_padding(CircleKeySpriteType.PURPLE) + (CircleKeySpriteType.PURPLE.key_size // 2) + constants.KEY_SPACING * 1
+            case Lane.RED_LANE:
+                return helpers.key_padding(CircleKeySpriteType.RED) + (CircleKeySpriteType.RED.key_size // 2) + constants.KEY_SPACING * 2
+            case Lane.BLUE_LANE:
+                return helpers.key_padding(CircleKeySpriteType.BLUE) + (CircleKeySpriteType.BLUE.key_size // 2) + constants.KEY_SPACING * 3
+            case _:
+                raise ValueError("Invalid lane color!")
+            
+    @property
+    def arrow_x_position(self) -> int:
+        match self:
+            case Lane.YELLOW_LANE:
+                return helpers.key_padding(ArrowKeySpriteType.YELLOW) + (ArrowKeySpriteType.YELLOW.key_size(1) // 2) + constants.KEY_SPACING * 0
+            case Lane.PURPLE_LANE:
+                return helpers.key_padding(ArrowKeySpriteType.PURPLE) + (ArrowKeySpriteType.PURPLE.key_size(2) // 2) + constants.KEY_SPACING * 1
+            case Lane.RED_LANE:
+                return helpers.key_padding(ArrowKeySpriteType.RED) + (ArrowKeySpriteType.RED.key_size(3) // 2) + constants.KEY_SPACING * 2
+            case Lane.BLUE_LANE:
+                return helpers.key_padding(ArrowKeySpriteType.BLUE) + (ArrowKeySpriteType.BLUE.key_size(4) // 2) + constants.KEY_SPACING * 3
+            case _:
+                raise ValueError("Invalid lane color!")
+    
+    @property
+    def bar_x_position(self) -> int:
+        match self:
+            case Lane.YELLOW_LANE:
+                return helpers.key_padding(BarKeySpriteType.YELLOW) + (BarKeySpriteType.YELLOW.key_size // 2) + constants.KEY_SPACING * 0
+            case Lane.PURPLE_LANE:
+                return helpers.key_padding(BarKeySpriteType.PURPLE) + (BarKeySpriteType.PURPLE.key_size // 2) + constants.KEY_SPACING * 1
+            case Lane.RED_LANE:
+                return helpers.key_padding(BarKeySpriteType.RED) + (BarKeySpriteType.RED.key_size // 2) + constants.KEY_SPACING * 2
+            case Lane.BLUE_LANE:
+                return helpers.key_padding(BarKeySpriteType.BLUE) + (BarKeySpriteType.BLUE.key_size // 2) + constants.KEY_SPACING * 3
+            case _:
+                raise ValueError("Invalid lane color!")
 
 
 class NoteSprite(sprite.Sprite):
@@ -156,6 +220,7 @@ class NoteSprite(sprite.Sprite):
             self.image = pygame.image.load(note_type.note_image).convert_alpha(surface_hint)
         else:
             self.image = pygame.image.load(note_type.note_image).convert_alpha()
+        # self.x_pos = helpers.key_padding(note_type) + (CircleKeySpriteType.BLUE.key_size // 2) + constants.KEY_SPACING * 3
         self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
         self.rect = self.image.get_rect(center=(x_pos, helpers.note_start_pos()))
         self.note_type = note_type

@@ -1,18 +1,19 @@
 # imports-start-hotreload
+
 import pygame
 
-import constants as constants
-import game_context as game_context
-import helpers as helpers
-import settings as settings
+import constants
+import game_context
+import helpers
+import settings
 from key_sprite import KeySprite, CircleKeySpriteType, ArrowKeySpriteType, BarKeySpriteType
-from note_sprite import NoteSprite, CircleSpriteType, ArrowSpriteType, BarSpriteType
+from note_sprite import NoteSprite, CircleSpriteType, ArrowSpriteType, BarSpriteType, Lane
 
 # imports-end-hotreload
 
 # globals-start-hotreload
-global player_keys
 
+global player_keys
 
 # globals-end-hotreload
 
@@ -41,19 +42,29 @@ def main() -> None:
                         ])
 
     NoteSprite(CircleSpriteType.BLUE,
-               helpers.key_padding(
-                   CircleKeySpriteType.BLUE) + (CircleKeySpriteType.BLUE.key_size // 2) + constants.KEY_SPACING * 3,
+               Lane.BLUE_LANE.circle_x_position,
                context.notes_group, surface_hint=screen)
+    
+    # NoteSprite(CircleSpriteType.YELLOW,
+    #            Lane.YELLOW_LANE.circle_x_position,
+    #            context.notes_group, surface_hint=screen)
+    
+    # NoteSprite(CircleSpriteType.RED,
+    #            Lane.RED_LANE.circle_x_position,
+    #            context.notes_group, surface_hint=screen)
 
     while running:
         # init-start-hotreload
+        
         delta_time = clock.tick(settings.fps) / 1000.0
         running = game_loop(screen, delta_time, context)
         pygame.display.flip()
+        
         # init-end-hotreload
 
 
 # loop-start-hotreload
+
 def game_loop(screen: pygame.Surface, delta_time: float, context: game_context.GameContext) -> bool:
     """
     The main loop of the game.
@@ -81,7 +92,6 @@ def game_loop(screen: pygame.Surface, delta_time: float, context: game_context.G
         context.notes_group.update(delta_time)
 
     return True
-
 
 # loop-end-hotreload
 
