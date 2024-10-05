@@ -45,13 +45,13 @@ def main() -> None:
                Lane.BLUE_LANE.circle_x_position,
                context.notes_group, surface_hint=screen)
     
-    # NoteSprite(CircleSpriteType.YELLOW,
-    #            Lane.YELLOW_LANE.circle_x_position,
-    #            context.notes_group, surface_hint=screen)
+    NoteSprite(CircleSpriteType.YELLOW,
+               Lane.YELLOW_LANE.circle_x_position,
+               context.notes_group, surface_hint=screen)
     
-    # NoteSprite(CircleSpriteType.RED,
-    #            Lane.RED_LANE.circle_x_position,
-    #            context.notes_group, surface_hint=screen)
+    NoteSprite(CircleSpriteType.RED,
+               Lane.RED_LANE.circle_x_position,
+               context.notes_group, surface_hint=screen)
 
     while running:
         # init-start-hotreload

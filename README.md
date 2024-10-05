@@ -13,9 +13,9 @@ Additions to this version:
     - Better Menu
     - Song selection?
 
-Current Status: Note pressing and note falling work
+Current Status: Workong on using osu files. Reworking hit system.
 
 To Do:
-- [ ] Work on JSON format for mapping
+- [ ] Work on using osu files to import songs
 - [ ] Start implementing sliders and settings
 - [ ] Song menu

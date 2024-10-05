@@ -240,7 +240,7 @@ class KeySprite(sprite.Sprite):
 
     def press_button(self, event: pygame.event.Event, delta_time: float) -> None:
         
-        note_intersection = sprite.spritecollide(self, GameContext.notes_group, False) # sprite.spritecollideany(self, GameContext.notes_group)
+        note_intersection = sprite.spritecollide(self, GameContext.notes_group, False)  # type: ignore
         
         if note_intersection and not self.note_intersected:
             self.note_intersected = True
@@ -269,7 +269,7 @@ class KeySprite(sprite.Sprite):
                 elapsed_time = ((time.time()) - (self.start_time))
                 print(f"{elapsed_time = }") # debug
                 
-                sprite.spritecollide(self, GameContext.notes_group, True)
+                sprite.spritecollide(self, GameContext.notes_group, True) # type: ignore
                 self.note_intersected = False
                 pygame.time.set_timer(self.event, 0)
                     
