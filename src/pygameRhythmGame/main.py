@@ -4,10 +4,11 @@ import pygame
 
 import constants
 import game_context
-import helpers
 import settings
-from key_sprite import KeySprite, CircleKeySpriteType, ArrowKeySpriteType, BarKeySpriteType
-from note_sprite import NoteSprite, CircleSpriteType, ArrowSpriteType, BarSpriteType, Lane
+from key_sprite import KeySprite
+from map_conversion import MapConverter, Map
+
+import os
 
 # imports-end-hotreload
 
@@ -21,43 +22,32 @@ global player_keys
 def main() -> None:
     global player_keys
     pygame.init()
+    pygame.mixer.init()
 
     pygame.display.set_caption(constants.WINDOW_TITLE)
 
-    screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
+    screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), pygame.RESIZABLE)
     clock = pygame.time.Clock()
     running = True
     context = game_context.GameContext()
 
-    player_keys = []
+    player_keys = [
+            KeySprite(1, "d", context.key_group, screen_hint=screen),
+            KeySprite(2, "f", context.key_group, screen_hint=screen),
+            KeySprite(3, "j", context.key_group, screen_hint=screen),
+            KeySprite(4, "k", context.key_group, screen_hint=screen)
+    ]
 
-    player_keys.extend([KeySprite(CircleKeySpriteType.YELLOW, 1, "d",
-                                  context.key_group, screen_hint=screen),
-                        KeySprite(CircleKeySpriteType.RED, 2, "f",
-                                  context.key_group, screen_hint=screen),
-                        KeySprite(CircleKeySpriteType.PURPLE, 3, "j",
-                                  context.key_group, screen_hint=screen),
-                        KeySprite(CircleKeySpriteType.BLUE, 4, "k",
-                                  context.key_group, screen_hint=screen)
-                        ])
-
-    NoteSprite(CircleSpriteType.BLUE,
-               Lane.BLUE_LANE.circle_x_position,
-               context.notes_group, surface_hint=screen)
-    
-    NoteSprite(CircleSpriteType.YELLOW,
-               Lane.YELLOW_LANE.circle_x_position,
-               context.notes_group, surface_hint=screen)
-    
-    NoteSprite(CircleSpriteType.RED,
-               Lane.RED_LANE.circle_x_position,
-               context.notes_group, surface_hint=screen)
-
+    critical_crystal: Map = MapConverter.map_conversion(os.path.join("seiryu__critical_crystal_Seiryu__SanadaYukimura", "seiryu__critical_crystal_Seiryu__SanadaYukimura__[Normal].osu"))
+    critical_crystal.change_song("critical_crystal.mp3")
+    critical_crystal.song.play()
     while running:
         # init-start-hotreload
         
+        
         delta_time = clock.tick(settings.fps) / 1000.0
-        running = game_loop(screen, delta_time, context)
+        
+        running = game_loop(screen, delta_time, critical_crystal)
         pygame.display.flip()
         
         # init-end-hotreload
@@ -65,7 +55,7 @@ def main() -> None:
 
 # loop-start-hotreload
 
-def game_loop(screen: pygame.Surface, delta_time: float, context: game_context.GameContext) -> bool:
+def game_loop(screen: pygame.Surface, delta_time: float, map: Map) -> bool:
     """
     The main loop of the game.
     :param screen: The screen to draw on.
@@ -74,22 +64,26 @@ def game_loop(screen: pygame.Surface, delta_time: float, context: game_context.G
     :return: Whether the game should continue running.
     """
     global player_keys
-
+    
     for event in pygame.event.get():
         match event.type:
             case pygame.QUIT:
                 return False
         if game_context.game_active:
-            for key in player_keys:
-                key.press_button(event, delta_time)
+                player_keys[0].press_button(event, map.group, delta_time)
+                player_keys[1].press_button(event, map.group, delta_time)
+                player_keys[2].press_button(event, map.group, delta_time)
+                player_keys[3].press_button(event, map.group, delta_time)
 
     screen.fill(constants.BACKGROUND_COLOR)
 
     if game_context.game_active:
         for key in player_keys:
-            key.draw(key.key_type, screen)
-        context.notes_group.draw(screen)
-        context.notes_group.update(delta_time)
+            key.draw(screen)
+        map.group.draw(screen)
+        map.group.update(delta_time)
+
+    
 
     return True
 

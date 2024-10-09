@@ -5,7 +5,8 @@ import os
 import shutil
 
 import constants
-from note_sprite import Lane
+from note_sprite import NoteData, NoteSprite
+import pygame.mixer
 
 # column 1 - x - math.floor(x * total_amount_of_columns / 512)
 
@@ -20,7 +21,14 @@ from note_sprite import Lane
 # column 6 - end of hold note if it is a hold note
 
 class Map:
-    ...
+    def __init__(self, hit_objects_list: list[NoteData], song: Optional[str] = None):
+        if song is not None:
+            self.song: pygame.mixer.Sound = pygame.mixer.Sound(os.path.join("Sounds", song))
+        hit_objects_sprites: list[NoteSprite] = [NoteSprite(note_data) for note_data in hit_objects_list]
+        self.group = pygame.sprite.Group(*hit_objects_sprites)
+    
+    def change_song(self, song: str) -> None:
+        self.song = pygame.mixer.Sound(os.path.join("Sounds", song))
 
 class MapConverter:
     
@@ -31,9 +39,9 @@ class MapConverter:
     @staticmethod
     def map_conversion(map_file: str) -> Map:
         hit_objects_str: list[str] = MapConverter.extract_hit_objects_string(map_file)
-        hit_objects_dict_list: list[dict[str, Any]] = MapConverter.extract_hit_objects(hit_objects_str)
+        hit_objects_list: list[NoteData] = list(map(NoteData.from_dict, MapConverter.extract_hit_objects(hit_objects_str)))
         
-        return Map()
+        return Map(hit_objects_list)
         
     @staticmethod
     def extract_osz_file(map_file: str) -> str:
@@ -68,7 +76,7 @@ class MapConverter:
     @staticmethod
     def extract_hit_objects_string(map_file: str) -> list[str]:
         hit_objects: list[str] = []
-        with open(os.path.join("Maps", map_file), "r") as file:
+        with open(os.path.join("Maps", map_file), "r", encoding="utf8") as file:
             flag = False
             for line in file.readlines():
                 if flag:
@@ -83,7 +91,7 @@ class MapConverter:
         for hit_object in hit_objects_strings:
             hit_object_values: list[str] = hit_object[:hit_object.find(":")].split(",")
             hit_object_dict: dict[str, Any] = {
-                specifier: value for specifier, value in zip(
+                specifier: int(value) for specifier, value in zip(
                     ["column", "y", "time", "type", "hit_sound", "hold_note_time"],
                     hit_object_values
                 ) if specifier != "y" or specifier != "hit_sound"
@@ -93,16 +101,4 @@ class MapConverter:
             hit_objects_list.append(hit_object_dict)
             
         return hit_objects_list
-            
-
-class NoteData:
-    def __init__(self, column: int, time: int, type: Optional[bool] = None, hold_note_time: Optional[int] = None):
-        """_summary_
-
-        Args:
-            column (int): _description_
-            time (int): _description_
-            type (Optional[bool], optional): _description_. Defaults to None.
-            hold (Optional[bool], optional): _description_. Defaults to None.
-        """
-        ...    
+ 
