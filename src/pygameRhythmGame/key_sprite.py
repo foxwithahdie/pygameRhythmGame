@@ -48,7 +48,7 @@ class KeySprite(sprite.Sprite):
         if note_intersection and not self.note_intersected:
             self.note_intersected = True
             self.start_time = time.time()
-            print(f'at note_intersection: {self.start_time}') # debug
+            #print(f'at note_intersection: {self.start_time}') # debug
             if isinstance(self.key_type, ArrowKeySpriteType):
                 pygame.time.set_timer(self.event, 
                     (self.key_type.key_size(arrow_dir=self.note_pos)) // int(delta_time * constants.SCROLL_SPEED)
@@ -67,12 +67,12 @@ class KeySprite(sprite.Sprite):
             self.rect.center = (self.x_pos, key_direction())
         if event.type == self.event:
             if not self.keydown:
-                print(f'{self.start_time * 1000 =}ms') # debug
-                print(f'{delta_time * 1000 =}ms') # debug
+                #print(f'{self.start_time * 1000 =}ms') # debug
+                #print(f'{delta_time * 1000 =}ms') # debug
                 elapsed_time = ((time.time()) - (self.start_time))
-                print(f"{elapsed_time = }") # debug
+                #print(f"{elapsed_time = }") # debug
                 
-                sprite.spritecollide(self, GameContext.notes_group, True) # type: ignore
+                sprite.spritecollide(self, group, True) # type: ignore
                 self.note_intersected = False
                 pygame.time.set_timer(self.event, 0)
                     
@@ -84,7 +84,6 @@ class KeySprite(sprite.Sprite):
         self.key = pygame.key.key_code(key)
     
     def draw(self, surface: pygame.Surface) -> None:
-        # key_type: CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType,
         """Draws the key onto the surface.
 
         Args:

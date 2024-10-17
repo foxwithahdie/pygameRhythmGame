@@ -1,13 +1,8 @@
-import os
-from enum import Enum
-from typing import NoReturn, Optional, Any
+from typing import Any
 
 import pygame
 import pygame.sprite as sprite
 
-import constants
-import helpers
-import settings
 from note_config import NoteConfig, Lane
 from sprite_types import *
 
@@ -59,8 +54,8 @@ class NoteSprite(sprite.Sprite):
         else:
             self.image = pygame.image.load(self.note_type.note_image).convert_alpha()
         self.image = pygame.transform.scale(self.image, helpers.scale_size(self.image.get_size(), 2 / 3))
-        start_pos = note_start_pos() + (-1 if not settings.downscroll else 1) * (constants.SCROLL_SPEED * self.note_data.time / 1000)
-        print(start_pos)
+        start_pos = note_start_pos() + (-1 if settings.downscroll else 1) * (constants.SCROLL_SPEED * self.note_data.time / 1000.0)
+        # print(start_pos)
         if isinstance(self.note_type, CircleSpriteType):
             self.x_pos = self.note_data.lane.circle_x_position
         elif isinstance(self.note_type, ArrowSpriteType):
@@ -77,9 +72,11 @@ class NoteSprite(sprite.Sprite):
             self.rect.centery += int(delta_time * constants.SCROLL_SPEED)
         else:
             self.rect.centery -= int(delta_time * constants.SCROLL_SPEED)
-        if (self.rect.centery - self.note_type.note_size - buffer >= constants.SCREEN_WIDTH\
-           or self.rect.centery + self.note_type.note_size + buffer <= 0):
+        
+        passes_bottom: bool = self.rect.centery - self.note_type.note_size - buffer >= constants.SCREEN_WIDTH
+        passes_top: bool = self.rect.centery + self.note_type.note_size + buffer <= 0
+        
+        if (passes_bottom and settings.downscroll) or (passes_top and not settings.downscroll):
+            #print(f"{self.rect.centery = }, {self.note_type.note_size = }, {self.rect.centery + self.note_type.note_size = }")
+            #print(f"{passes_bottom and settings.downscroll = }, {passes_top and not settings.downscroll = }")
             sprite.Sprite.kill(self)
-
-    def draw(self, screen: pygame.Surface) -> None:
-        screen.blit(self.image, self.rect)

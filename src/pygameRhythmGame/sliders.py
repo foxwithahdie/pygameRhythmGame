@@ -10,7 +10,7 @@ class Slider(Sprite):
         super().__init__(*groups)
         self.x_pos = x_pos
         self.y_pos = y_pos
-        self.changing_value = value
+        self.delta = value
         self.scale = scale
         self.step = step
 

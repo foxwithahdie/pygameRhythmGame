@@ -8,18 +8,6 @@ import constants
 from note_sprite import NoteData, NoteSprite
 import pygame.mixer
 
-# column 1 - x - math.floor(x * total_amount_of_columns / 512)
-
-# column 2 - y - does not affect
-
-# column 3 - time when object is supposed to be hit
-
-# column 4 - type of note - if 1 or 5, regular note, else hold note
-
-# column 5 - hit sound - skip
-
-# column 6 - end of hold note if it is a hold note
-
 class Map:
     def __init__(self, hit_objects_list: list[NoteData], song: Optional[str] = None):
         if song is not None:
@@ -45,7 +33,7 @@ class MapConverter:
         
     @staticmethod
     def extract_osz_file(map_file: str) -> str:
-        """Extracts the osz file into a folder, deletes all of the extraneous sound files and moves the song file to the sounds folder.
+        """Extracts the osz file into a folder, deletes all the extraneous sound files and moves the song file to the sounds folder.
 
         Args:
             map_file (str): The filename of the osz file.

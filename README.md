@@ -16,6 +16,7 @@ Additions to this version:
 Current Status: Workong on using osu files. Reworking hit system.
 
 To Do:
-- [ ] Work on using osu files to import songs
+- [ ] Make maps faster
+- [ ] Work on collisions
 - [ ] Start implementing sliders and settings
 - [ ] Song menu
