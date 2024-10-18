@@ -312,3 +312,5 @@ pyrightconfig.json
 
 test.py
 tempCodeRunnerFile.py
+
+.DS_Store
