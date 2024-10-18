@@ -4,14 +4,16 @@ from zipfile import ZipFile
 import os
 import shutil
 
-import constants
-from note_sprite import NoteData, NoteSprite
+from config import constants
+from .note_sprite import NoteData, NoteSprite
 import pygame.mixer
 
 class Map:
     """
-    A class representing a map. It contains all of the notes in order of when they will be created, and a song tied to the map.
+    A class representing a map. It contains all the notes in order of when they will be created,
+     and a song tied to the map.
     """
+
     def __init__(self, hit_objects_list: list[NoteData], song: Optional[str] = None):
         if song is not None:
             self.song: pygame.mixer.Sound = pygame.mixer.Sound(os.path.join("Sounds", song))
@@ -24,13 +26,14 @@ class Map:
         Args:
             song (str): The song file name.
         """
+
         self.song = pygame.mixer.Sound(os.path.join("Sounds", song))
 
 class MapConverter:
     
     @staticmethod
     def column(x_value: int) -> int:
-        """Returns the column (1, 2, etc) of the note depending on the x value in the map file.
+        """Returns the column (1, 2, etc.) of the note depending on the x value in the map file.
 
         Args:
             x_value (int): The x value in the map file.
@@ -38,6 +41,7 @@ class MapConverter:
         Returns:
             int: The column corresponding to the x value.
         """
+
         return math.floor(x_value * constants.TOTAL_COLUMNS / 512)
     
     @staticmethod
@@ -48,16 +52,20 @@ class MapConverter:
             map_file (str): The file name of the map.
 
         Returns:
-            Map: The map object with all of the notes created for it in place.
+            Map: The map object with all the notes created for it in place.
         """
+
         hit_objects_str: list[str] = MapConverter.extract_hit_objects_string(map_file)
-        hit_objects_list: list[NoteData] = list(map(NoteData.from_dict, MapConverter.extract_hit_objects(hit_objects_str)))
+        hit_objects_list: list[NoteData] = list(
+            map(NoteData.from_dict, MapConverter.extract_hit_objects(hit_objects_str))
+        )
         
         return Map(hit_objects_list)
         
     @staticmethod
     def extract_osz_file(map_file: str) -> str:
-        """Extracts the osz file into a folder, deletes all the extraneous sound files and moves the song file to the sounds folder.
+        """Extracts the osz file into a folder, deletes all the extraneous sound files and moves the song file
+         to the "Sounds" folder.
 
         Args:
             map_file (str): The filename of the osz file.
@@ -65,6 +73,7 @@ class MapConverter:
         Returns:
             str: The folder name.
         """
+
         folder_file_name: str = map_file[:map_file.rfind(".")]
         song_file: str = ""
         with ZipFile(os.path.join("Maps", map_file), "r") as osz_file:
@@ -88,12 +97,14 @@ class MapConverter:
     @staticmethod
     def extract_hit_objects_string(map_file: str) -> list[str]:
         """Extracts the list of the comma-separated strings in the map file of the note information.
+
         Args:
             map_file (str): The map file name.
 
         Returns:
-            list[str]: The list of the comma-separated strings with all of the note information.
+            list[str]: The list of the comma-separated strings with all the note information.
         """
+
         hit_objects: list[str] = []
         with open(os.path.join("Maps", map_file), "r", encoding="utf8") as file:
             flag = False
@@ -106,13 +117,14 @@ class MapConverter:
     
     @staticmethod
     def extract_hit_objects(hit_objects_strings: list[str]) -> list[dict[str, Any]]:
-        """Converts all of the comma-separated note information into a list of dictionaries containing the note information.
+        """Converts all the comma-separated note information into a list of dictionaries containing note information.
 
         Args:
             hit_objects_strings (list[str]): The comma-separated note information in a list.
 
         Returns:
-            list[dict[str, Any]]: A list of dictionaries of the note information, split up by column, time, type and if it is a hold note, hold note time.
+            list[dict[str, Any]]: A list of dictionaries of the note information,
+             split up by column, time, type and if it is a hold note, hold note time.
         """
         hit_objects_list: list[dict[str, Any]] = []
         for hit_object in hit_objects_strings:
@@ -128,4 +140,3 @@ class MapConverter:
             hit_objects_list.append(hit_object_dict)
             
         return hit_objects_list
- 

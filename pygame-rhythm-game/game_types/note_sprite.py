@@ -3,15 +3,17 @@ from typing import Any, Self
 import pygame
 from pygame.sprite import Sprite
 
-from note_config import NoteConfig, Lane
-from sprite_types import *
+from config.note_config import NoteConfig, Lane
+
+from .sprite_types import *
 
 
 class NoteData:
     """
     A data class holding the values for the note lanes, timing and type of note.
     """
-    def __init__(self, column: int, time: int, type: bool, hold_note_time: Optional[int] = None):
+
+    def __init__(self, column: int, time: int, note_type: bool, hold_note_time: Optional[int] = None):
         column += 1
         match column:
             case 1:
@@ -24,37 +26,39 @@ class NoteData:
                 self.lane = Lane.BLUE_LANE
             case _:
                 raise ValueError("Invalid column. Check math in map_conversion.py")
-            
+
         self.time = time
         self.type = type
         if hold_note_time is not None:
             self.hold_note_time = hold_note_time
-        
+
     @classmethod
-    def from_dict(cls, dict: dict[str, Any]) -> Self:
+    def from_dict(cls, note_info: dict[str, Any]) -> Self:
         """Creates an instance of NoteData from a dictionary.
 
         Args:
-            dict (dict[str, Any]): A dictionary represntation of the NoteData class, with column, time, type and a potiential hold time for the hold note.
+            note_info (dict[str, Any]): A dictionary representation of the NoteData class,
+             with column, time, type and a potential hold time for the hold note.
 
         Returns:
             An instance of NoteData.
         """
-        return NoteData(dict["column"], dict["time"], dict["type"], hold_note_time=dict.get("hold_note_time")) # type: ignore
+
+        return NoteData(note_info["column"], note_info["time"], note_info["type"], hold_note_time=note_info.get("hold_note_time")) # type: ignore
 
 
 class NoteSprite(Sprite):
     """
     A sprite representing a falling note.
-    
+
     Inheritance Use:
         Sprite.update(delta_time: float) -> None:
             Updates the sprite after each frame. The notes fall by a particular speed after each frame.
-            
+
             Args:
                 delta_time (float): The time between each frame.
     """
-        
+
     def __init__(self, note_data: NoteData, *groups, surface_hint: Optional[pygame.Surface] = None):
         super().__init__(*groups)
         self.note_data = note_data
@@ -82,11 +86,11 @@ class NoteSprite(Sprite):
             self.rect.centery += int(delta_time * constants.SCROLL_SPEED)
         else:
             self.rect.centery -= int(delta_time * constants.SCROLL_SPEED)
-        
+
         passes_bottom: bool = self.rect.centery - self.note_type.note_size - buffer >= constants.SCREEN_WIDTH
         passes_top: bool = self.rect.centery + self.note_type.note_size + buffer <= 0
-        
+
         if (passes_bottom and settings.downscroll) or (passes_top and not settings.downscroll):
-            #print(f"{self.rect.centery = }, {self.note_type.note_size = }, {self.rect.centery + self.note_type.note_size = }")
-            #print(f"{passes_bottom and settings.downscroll = }, {passes_top and not settings.downscroll = }")
+            # print(f"{self.rect.centery = }, {self.note_type.note_size = }, {self.rect.centery + self.note_type.note_size = }")
+            # print(f"{passes_bottom and settings.downscroll = }, {passes_top and not settings.downscroll = }")
             Sprite.kill(self)

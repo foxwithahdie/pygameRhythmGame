@@ -1,13 +1,11 @@
 import time
-from typing import Optional
 
 import pygame
-from game_context import GameContext
-from note_config import NoteConfig
+from config.note_config import NoteConfig
 import pygame.sprite as sprite
-from sprite_types import *
+from .sprite_types import *
 
-import constants
+from config import constants
 import helpers
 
 
@@ -17,13 +15,15 @@ class KeySprite(sprite.Sprite):
     
     Inheritance Use:
         Sprite.draw(screen: pygame.Surface) -> None:
-            Draws the sprite to the window. If you press on the key corresponding to the KeySprite, it will register a press and change images.
+            Draws the sprite to the window. If you press on the key corresponding to the KeySprite,
+             it will register a press and change images.
             
             WIP.
             
             Args:
                 screen (pygame.Surface): The surface the sprite is drawn on.
     """
+
     def __init__(self, note_pos: int, key: str, *groups, screen_hint: Optional[pygame.Surface] = None):
         super().__init__(*groups)
         self.key_type = NoteConfig.parse_key_config(NoteConfig.key_config[note_pos - 1])
@@ -54,11 +54,13 @@ class KeySprite(sprite.Sprite):
         """The event for what happens when you press a button. Times the time it takes to hit the note. 
         
             WIP.
+            
         Args:
             event (pygame.event.Event): The set of all events currently happening.
             group (pygame.sprite.Group): The sprite group the note is in.
             delta_time (float): The time between each frame.
         """
+
         note_intersection = sprite.spritecollide(self, group, False)  # type: ignore
         
         if note_intersection and not self.note_intersected:
@@ -70,9 +72,9 @@ class KeySprite(sprite.Sprite):
                     (self.key_type.key_size(arrow_dir=self.note_pos)) // int(delta_time * constants.SCROLL_SPEED)
                 )
             else:
-                pygame.time.set_timer(self.event, 
-                    (self.key_type.key_size) // int(delta_time * constants.SCROLL_SPEED)
-                )     
+                pygame.time.set_timer(self.event,
+                    self.key_type.key_size // int(delta_time * constants.SCROLL_SPEED)
+                )
         
         if event.type == pygame.KEYDOWN:
             if event.key == self.key:

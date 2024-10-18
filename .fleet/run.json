@@ -2,8 +2,8 @@
     "configurations": [
         {
             "type": "python",
-            "name": "Pygame config",
-            "file": "src/main.py",
+            "name": "pygame-rhythm-game configuration",
+            "file": "$WORKSPACE_DIR$/pygame-rhythm-game/__main__.py",
             "arguments": [],
         },
         

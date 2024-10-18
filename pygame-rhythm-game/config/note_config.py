@@ -1,21 +1,29 @@
 from typing import NoReturn
-from enum import Enum
 
-from sprite_types import *
-import constants
+from game_types.sprite_types import *
+from . import constants
 
 
 class Lane(Enum):
     """
     An enum for representing a particular lane. Condenses the spacing for each lane depending on the key type.
     """
+
     YELLOW_LANE = 1
     PURPLE_LANE = 2
     RED_LANE = 3
     BLUE_LANE = 4
     
     @property
-    def circle_x_position(self) -> int:
+    def circle_x_position(self) -> int | NoReturn:
+        """The X position that a circle in a lane should be.
+
+        Raises:
+            ValueError: Raises if it is an invalid instance of Lane.
+
+        Returns:
+            int: The X position of the circle, otherwise raises an error.
+        """
         match self:
             case Lane.YELLOW_LANE:
                 return key_padding(CircleKeySpriteType.YELLOW) + (CircleKeySpriteType.YELLOW.key_size // 2) + constants.KEY_SPACING * 0
@@ -29,7 +37,16 @@ class Lane(Enum):
                 raise ValueError("Invalid lane color!")
             
     @property
-    def arrow_x_position(self) -> int:
+    def arrow_x_position(self) -> int | NoReturn:
+        """The X position that an arrow in a lane should be.
+
+        Raises:
+            ValueError: Raises if it is an invalid instance of Lane.
+
+        Returns:
+            int | NoReturn: The X position of an arrow, otherwise raises an error.
+        """
+        
         match self:
             case Lane.YELLOW_LANE:
                 return key_padding(ArrowKeySpriteType.YELLOW) + (ArrowKeySpriteType.YELLOW.key_size(1) // 2) + constants.KEY_SPACING * 0
@@ -43,7 +60,16 @@ class Lane(Enum):
                 raise ValueError("Invalid lane color!")
     
     @property
-    def bar_x_position(self) -> int:
+    def bar_x_position(self) -> int | NoReturn:
+        """The X position that a bar in a lane should be.
+
+        Raises:
+            ValueError: Raises if it is an invalid instance of Lane.
+
+        Returns:
+            int | NoReturn: The X position of the bar, otherwise raises an error.
+        """
+        
         match self:
             case Lane.YELLOW_LANE:
                 return key_padding(BarKeySpriteType.YELLOW) + (BarKeySpriteType.YELLOW.key_size // 2) + constants.KEY_SPACING * 0
@@ -62,11 +88,25 @@ class NoteConfig:
     A class holding static values and methods for configuring what notes types are on screen,
     and parsing those into their note types.
     """
+
     key_config: list[str] = ["y-circle", "r-circle", "b-circle", "p-circle"]
     note_config: list[str] = ["y-circle", "r-circle", "b-circle", "p-circle"]
     
     @staticmethod
     def parse_note_config(conf: str) -> CircleSpriteType | ArrowSpriteType | BarSpriteType | NoReturn:
+        """Parses the string configuration for a note into a sprite type.
+
+        Args:
+            conf (str): The string configuration for a specific note.
+
+        Raises:
+            ValueError: Raises an error if the note type is invalid.
+
+        Returns:
+            CircleSpriteType | ArrowSpriteType | BarSpriteType | NoReturn: Returns the sprite type for a note, otherwise
+            raises an error.
+        """
+        
         conf_split: list[str] = conf.split("-")
         if conf_split[-1] == "circle":
             match conf_split[0]:
@@ -109,6 +149,19 @@ class NoteConfig:
         
     @staticmethod
     def parse_key_config(conf: str) -> CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType | NoReturn:
+        """Parses the string configuration for a key into a sprite type.
+
+        Args:
+            conf (str): The string configuration for a specific key.
+
+        Raises:
+            ValueError: Raises an error if the key type is invalid.
+
+        Returns:
+            CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType | NoReturn: Returns the sprite type for a note,
+             otherwise raises an error.
+        """
+        
         conf_split: list[str] = conf.split("-")
         if conf_split[-1] == "circle":
             match conf_split[0]:

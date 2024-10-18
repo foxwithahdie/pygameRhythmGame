@@ -2,7 +2,7 @@
 
 Rhythm Game using Pygame.
 
-To install this Rhythm Game, enter `pip install -e .` while in the folder to install all the dependencies for this project.
+To install this Rhythm Game, you must install Poetry. Enter `poetry install` while in the folder to install all the dependencies for this project.
 
 v3.0:
 
@@ -13,11 +13,12 @@ Additions to this version:
     - Better Menu
     - Song selection?
 
-Current Status: Workong on using osu files. Reworking hit system.
+Current Status: Working on speeding up the notes falling!
 
 To Do:
 - [ ] Make maps faster
 - [ ] Work on collisions
 - [ ] Start implementing sliders and settings
-- [ ] Song menu
-- [ ] Review and rearrange package structure
+- [ ] Different menus
+- [ ] Pause
+- [ ] Open up to higher than 4K

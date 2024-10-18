@@ -1,18 +1,18 @@
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
-[project]
-name = "pygameRhythmGame"
-version = "3.0"
-dependencies = ["pygame==2.6.0"]
-requires-python = ">=3.11"
+[tool.poetry]
+name = "pygame-rhythm-game"
+version = "0.1.0"
+description = "Rhythm game using Pygame."
+authors = ["ram <ramzey.burdette2005@gmail.com>"]
 readme = "README.md"
 
-[project.optional-dependencies]
-dev = [
-    "pygame==2.6.0.dev2",
-    'mypy',
-    'pygame-hotreload==0.0.32',
-    'black'
-]
+[tool.poetry.dependencies]
+python = "^3.11"
+pygame = "2.6.0"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.12.0"
+black = "^24.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

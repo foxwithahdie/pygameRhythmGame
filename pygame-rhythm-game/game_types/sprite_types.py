@@ -5,8 +5,7 @@ from typing import NoReturn, Optional
 import pygame
 
 import helpers
-import constants
-import settings
+from config import constants, settings
 
 pygame.display.init()
 
@@ -23,6 +22,10 @@ class CircleKeySpriteType(Enum):
 
     @property
     def grey_key_image(self) -> str:
+        """
+        Property for the file path of the gray key image.
+        """
+
         return os.path.join(constants.ASSET_DIRECTORY, "grey_circle.png")
 
     @property
@@ -35,6 +38,7 @@ class CircleKeySpriteType(Enum):
         Returns:
             str | NoReturn: Will return the file name of the key type, otherwise will raise an error.
         """
+
         directory = constants.ASSET_DIRECTORY
 
         match self:
@@ -58,6 +62,7 @@ class CircleKeySpriteType(Enum):
         Returns:
             int: The size of the key.
         """
+
         directory = constants.ASSET_DIRECTORY
         circle_key: pygame.Surface = helpers.transform_image(pygame.image.load(
             os.path.join(directory, "grey_circle.png")).convert_alpha(), (2 / 3))
@@ -83,6 +88,7 @@ class ArrowKeySpriteType(Enum):
         Returns:
             str | NoReturn: Returns the grey key image file name, raises an error otherwise.
         """
+
         directory = constants.ASSET_DIRECTORY
         
         match self:
@@ -109,6 +115,7 @@ class ArrowKeySpriteType(Enum):
         Returns:
             str | NoReturn: Returns the file name, otherwise raises an error.
         """
+
         directory = constants.ASSET_DIRECTORY
 
         match self:
@@ -131,7 +138,8 @@ class ArrowKeySpriteType(Enum):
             Creates an instance of the key surface and returns the width.
 
         Args:
-            arrow_dir (Optional[int], optional): The direction of the arrow key. Defaults to None. 1 -> Left, 2 -> Down, 3 -> Up, 4 -> Right.
+            arrow_dir (Optional[int], optional): The direction of the arrow key. Defaults to None. 1 -> Left,
+             2 -> Down, 3 -> Up, 4 -> Right.
                 
         Raises:
             ValueError: Raises if it is not a defined direction of the arrow key sprite type.
@@ -139,6 +147,7 @@ class ArrowKeySpriteType(Enum):
         Returns:
             int | NoReturn: Returns the width of the key, otherwise raises an error.
         """
+
         directory = constants.ASSET_DIRECTORY
 
         match arrow_dir:
@@ -174,6 +183,10 @@ class BarKeySpriteType(Enum):
 
     @property
     def grey_key_image(self) -> str:
+        """
+        Property for the file path of the gray key image.
+        """
+
         return os.path.join(constants.ASSET_DIRECTORY, "grey_bar.png")
 
     @property
@@ -186,6 +199,7 @@ class BarKeySpriteType(Enum):
         Returns:
             str | NoReturn: The file name of the specific bar key instance, otherwise raises an error.
         """
+
         directory = constants.ASSET_DIRECTORY
 
         match self:
@@ -252,6 +266,7 @@ class CircleSpriteType(Enum):
         Returns:
             int: The size of the circle key.
         """
+
         directory = constants.ASSET_DIRECTORY
         circle_note: pygame.Surface = helpers.transform_image(pygame.image.load(
             os.path.join(directory, "grey_circle.png")).convert_alpha(), (2 / 3))
@@ -303,6 +318,7 @@ class ArrowSpriteType(Enum):
         Returns:
             int | NoReturn: Returns the width of the note, otherwise raises an error.
         """
+
         directory = constants.ASSET_DIRECTORY
 
         match self:
@@ -368,6 +384,7 @@ class BarSpriteType(Enum):
         Returns:
             int: The width of the note.
         """
+
         directory = constants.ASSET_DIRECTORY
         bar_note: pygame.Surface = helpers.transform_image(pygame.image.load(
             os.path.join(directory, "grey_bar.png")).convert_alpha(), (2 / 3))
@@ -380,7 +397,8 @@ def key_padding(key_type: CircleKeySpriteType | ArrowKeySpriteType | BarKeySprit
 
     Args:
         key_type (CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType): The type of key.
-        arrow_dir (Optional[int], optional): If the key is an arrow, the direction the arrow is facing (1, 2, 3, 4). Defaults to None.
+        arrow_dir (Optional[int], optional): If the key is an arrow, the direction the arrow is facing (1, 2, 3, 4).
+         Defaults to None.
 
     Returns:
         int: _description_
@@ -404,6 +422,7 @@ def key_direction() -> int:
     Returns:
         int: Y position.
     """
+
     return constants.KEY_DOWN_Y_POS if settings.downscroll else constants.KEY_UP_Y_POS
 
 
@@ -415,4 +434,5 @@ def note_start_pos() -> int:
     Returns:
         int: Starting position of the note.
     """
+    
     return -60 if settings.downscroll else constants.SCREEN_HEIGHT + 60

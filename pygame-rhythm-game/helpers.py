@@ -2,7 +2,7 @@ import pygame
 
 
 def scale_size(size: tuple[int, int], scale: float) -> tuple[int, int]:
-    """Scales a size tuple by a given scalar.
+    """Scales a tuple by a given scalar.
 
     Args:
         size (tuple[int, int]): The size tuple.
@@ -16,7 +16,7 @@ def scale_size(size: tuple[int, int], scale: float) -> tuple[int, int]:
 
 
 def transform_image(image: pygame.Surface, scale: float) -> pygame.Surface:
-    """Scales a image by a given scalar.
+    """Scales an image by a given scalar.
 
     Args:
         image (pygame.Surface): The given image.

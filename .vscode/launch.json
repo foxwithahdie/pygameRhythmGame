@@ -8,7 +8,7 @@
             "name": "Python: main.py (Integrated Terminal)",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/src/main.py",
+            "program": "${workspaceFolder}/pygame-rhythm-game/__main__.py",
             "console": "integratedTerminal"
         }
     ]

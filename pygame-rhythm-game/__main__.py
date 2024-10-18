@@ -1,23 +1,14 @@
-# imports-start-hotreload
-
 import pygame
 
-import constants
+import config.constants
 import game_context
-import settings
-from key_sprite import KeySprite
-from note_sprite import NoteSprite, NoteData
-from map_conversion import MapConverter, Map
+import config.settings
+from game_types.key_sprite import KeySprite
+from game_types.map_conversion import MapConverter, Map
 
 import os
 
-# imports-end-hotreload
-
-# globals-start-hotreload
-
 global player_keys
-
-# globals-end-hotreload
 
 
 def main() -> None:
@@ -28,14 +19,12 @@ def main() -> None:
     pygame.init()
     pygame.mixer.init()
 
-    pygame.display.set_caption(constants.WINDOW_TITLE)
+    pygame.display.set_caption(config.constants.WINDOW_TITLE)
 
-    screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), pygame.RESIZABLE)
+    screen = pygame.display.set_mode((config.constants.SCREEN_WIDTH, config.constants.SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     running = True
     context = game_context.GameContext()
-    
-    # NoteSprite(NoteData.from_dict({"column": 1, "time": 5, "type": True}), context.test_group)
 
     player_keys = [
             KeySprite(1, "d", context.key_group, screen_hint=screen),
@@ -52,17 +41,12 @@ def main() -> None:
     critical_crystal.change_song("critical_crystal.mp3")
     critical_crystal.song.play()
     while running:
-        # init-start-hotreload
         
-        delta_time = clock.tick(settings.fps) / 1000.0
+        delta_time = clock.tick(config.settings.fps) / 1000.0
         
         running = game_loop(screen, delta_time, critical_crystal)
         pygame.display.flip()
-        
-        # init-end-hotreload
 
-
-# loop-start-hotreload
 
 def game_loop(screen: pygame.Surface, delta_time: float, song_map: Map) -> bool:
     """The main loop of the game separated into a function.
@@ -70,7 +54,7 @@ def game_loop(screen: pygame.Surface, delta_time: float, song_map: Map) -> bool:
     WIP.
     
     Args:
-        screen (pygame.Surface): Where all of the game parts are drawn.
+        screen (pygame.Surface): Where all the game parts are drawn.
         delta_time (float): The time it takes for a frame to draw.
         song_map (Map): The map that is being played. Test parameter.
 
@@ -89,7 +73,7 @@ def game_loop(screen: pygame.Surface, delta_time: float, song_map: Map) -> bool:
             player_keys[2].press_button(event, song_map.group, delta_time)
             player_keys[3].press_button(event, song_map.group, delta_time)
 
-    screen.fill(constants.BACKGROUND_COLOR)
+    screen.fill(config.constants.BACKGROUND_COLOR)
 
     if game_context.game_active:
         for key in player_keys:
@@ -100,8 +84,6 @@ def game_loop(screen: pygame.Surface, delta_time: float, song_map: Map) -> bool:
 
 
     return True
-
-# loop-end-hotreload
 
 
 if __name__ == '__main__':

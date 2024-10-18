@@ -6,7 +6,9 @@ from pygame.sprite import Sprite
 
 class Slider(Sprite):
     """
-    A sprite for a slider. WIP.
+    A sprite for a slider.
+
+    WIP.
     
     Inheritance Use:
         Sprite.draw(screen: pygame.Surface) -> None:
@@ -15,6 +17,7 @@ class Slider(Sprite):
         Sprite.update(delta_time: float) -> None:
             Not implemented yet.
     """
+
     def __init__(self, x_pos: int, y_pos: int, value: Any, scale: int, step: int, *groups,
                  screen_hint: pygame.Surface | None = None):
         super().__init__(*groups)
