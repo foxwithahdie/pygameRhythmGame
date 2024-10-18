@@ -9,8 +9,6 @@ class GameContext:
     settings: pygame.sprite.Group = pygame.sprite.Group()
     song_selection: pygame.sprite.Group = pygame.sprite.Group()
     main_menu: pygame.sprite.Group = pygame.sprite.Group()
-    test_group: pygame.sprite.Group=  pygame.sprite.Group()
-    
 
 game_active: bool = True
 

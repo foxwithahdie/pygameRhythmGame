@@ -53,6 +53,11 @@ class CircleKeySpriteType(Enum):
 
     @property
     def key_size(self) -> int:
+        """Property for the size of the key.
+
+        Returns:
+            int: The size of the key.
+        """
         directory = constants.ASSET_DIRECTORY
         circle_key: pygame.Surface = helpers.transform_image(pygame.image.load(
             os.path.join(directory, "grey_circle.png")).convert_alpha(), (2 / 3))
@@ -217,9 +222,13 @@ class CircleSpriteType(Enum):
 
     @property
     def note_image(self) -> str | NoReturn:
-        """
-        The image of the circle for this note type.
-        :return: The file path of the image.
+        """Property of the file path of the note image.
+
+        Raises:
+            ValueError: Raises if it is not a valid instance of CircleSpriteType.
+
+        Returns:
+            str | NoReturn: Returns the file path of the note image, otherwise raises an error.
         """
 
         match self:
@@ -238,10 +247,10 @@ class CircleSpriteType(Enum):
 
     @property
     def note_size(self) -> int:
-        """_summary_
+        """Property for the size of the circle note.
 
         Returns:
-            int: _description_
+            int: The size of the circle key.
         """
         directory = constants.ASSET_DIRECTORY
         circle_note: pygame.Surface = helpers.transform_image(pygame.image.load(
@@ -261,9 +270,13 @@ class ArrowSpriteType(Enum):
 
     @property
     def note_image(self) -> str | NoReturn:
-        """
-        The image of the circle for this note type.
-        :return: The file path of the image.
+        """Property of the file path of the note image.
+
+        Raises:
+            ValueError: Raises if it is not a valid instance of ArrowSpriteType.
+
+        Returns:
+            str | NoReturn: Returns the file path of the note image, otherwise raises an error and does not return.
         """
 
         match self:
@@ -282,9 +295,13 @@ class ArrowSpriteType(Enum):
 
     @property
     def note_size(self) -> int | NoReturn:
-        """
-        The size of the note for the specific note type.
-        :return: The integer size of the note type.
+        """The size of the note for a particular arrow.
+
+        Raises:
+            ValueError: Raises if it is not a valid instance of ArrowSpriteType.
+
+        Returns:
+            int | NoReturn: Returns the width of the note, otherwise raises an error.
         """
         directory = constants.ASSET_DIRECTORY
 
@@ -321,9 +338,13 @@ class BarSpriteType(Enum):
 
     @property
     def note_image(self) -> str | NoReturn:
-        """
-        The image of the circle for this note type.
-        :return: The file path of the image.
+        """A property of the file path of the note image.
+
+        Raises:
+            ValueError: Raises if it is not a valid instance of BarSpriteType.
+
+        Returns:
+            str | NoReturn: Returns the file path for the note image, otherwise raises an error.
         """
 
         match self:
@@ -342,10 +363,10 @@ class BarSpriteType(Enum):
 
     @property
     def note_size(self) -> int:
-        """_summary_
+        """Property of the width of the note.
 
         Returns:
-            int: _description_
+            int: The width of the note.
         """
         directory = constants.ASSET_DIRECTORY
         bar_note: pygame.Surface = helpers.transform_image(pygame.image.load(
@@ -355,11 +376,14 @@ class BarSpriteType(Enum):
 
 def key_padding(key_type: CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType,
                 arrow_dir: Optional[int] = None) -> int:
-    """
-    Calculates the padding around the keys.
-    :param key_type: Type of key
-    :param arrow_dir: If the type of key is an arrow, find the specific arrow direction.
-    :return: Pixel width of padding.
+    """Calculates the width that the key needs to be drawn at in order to be properly centered.
+
+    Args:
+        key_type (CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType): The type of key.
+        arrow_dir (Optional[int], optional): If the key is an arrow, the direction the arrow is facing (1, 2, 3, 4). Defaults to None.
+
+    Returns:
+        int: _description_
     """
 
     screen_width: int = constants.SCREEN_WIDTH
@@ -389,6 +413,6 @@ def note_start_pos() -> int:
     depending on if it is downscroll or upscroll.
 
     Returns:
-        int: Y p
+        int: Starting position of the note.
     """
     return -60 if settings.downscroll else constants.SCREEN_HEIGHT + 60

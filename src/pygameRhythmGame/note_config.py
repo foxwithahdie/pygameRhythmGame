@@ -6,6 +6,9 @@ import constants
 
 
 class Lane(Enum):
+    """
+    An enum for representing a particular lane. Condenses the spacing for each lane depending on the key type.
+    """
     YELLOW_LANE = 1
     PURPLE_LANE = 2
     RED_LANE = 3
@@ -55,6 +58,10 @@ class Lane(Enum):
 
 
 class NoteConfig:
+    """
+    A class holding static values and methods for configuring what notes types are on screen,
+    and parsing those into their note types.
+    """
     key_config: list[str] = ["y-circle", "r-circle", "b-circle", "p-circle"]
     note_config: list[str] = ["y-circle", "r-circle", "b-circle", "p-circle"]
     
@@ -141,4 +148,3 @@ class NoteConfig:
                     raise ValueError("Invalid note color!")
         else:
             raise ValueError("Invalid note type!")
-        

@@ -20,3 +20,4 @@ To Do:
 - [ ] Work on collisions
 - [ ] Start implementing sliders and settings
 - [ ] Song menu
+- [ ] Review and rearrange package structure

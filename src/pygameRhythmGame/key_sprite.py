@@ -14,6 +14,15 @@ import helpers
 class KeySprite(sprite.Sprite):
     """
     A sprite representing the key that the user presses.
+    
+    Inheritance Use:
+        Sprite.draw(screen: pygame.Surface) -> None:
+            Draws the sprite to the window. If you press on the key corresponding to the KeySprite, it will register a press and change images.
+            
+            WIP.
+            
+            Args:
+                screen (pygame.Surface): The surface the sprite is drawn on.
     """
     def __init__(self, note_pos: int, key: str, *groups, screen_hint: Optional[pygame.Surface] = None):
         super().__init__(*groups)
@@ -42,7 +51,14 @@ class KeySprite(sprite.Sprite):
         self.start_time: float = 0.0
 
     def press_button(self, event: pygame.event.Event, group: pygame.sprite.Group, delta_time: float) -> None:
+        """The event for what happens when you press a button. Times the time it takes to hit the note. 
         
+            WIP.
+        Args:
+            event (pygame.event.Event): The set of all events currently happening.
+            group (pygame.sprite.Group): The sprite group the note is in.
+            delta_time (float): The time between each frame.
+        """
         note_intersection = sprite.spritecollide(self, group, False)  # type: ignore
         
         if note_intersection and not self.note_intersected:
@@ -81,15 +97,14 @@ class KeySprite(sprite.Sprite):
             self.note_intersected = False
 
     def change_keybind(self, key: str) -> None:
+        """Changes the keybind for a particular key.
+
+        Args:
+            key (str): The letter of the key.
+        """
         self.key = pygame.key.key_code(key)
     
     def draw(self, surface: pygame.Surface) -> None:
-        """Draws the key onto the surface.
-
-        Args:
-            key_type (CircleKeySpriteType | ArrowKeySpriteType | BarKeySpriteType): The type of key that would be drawn, so you can draw the different images based on if it is pressed.
-            surface (pygame.Surface): Where to draw the key.
-        """
         key_type = type(self.key_type)
         match self.key_type:
             case key_type.YELLOW: key_type = key_type.YELLOW

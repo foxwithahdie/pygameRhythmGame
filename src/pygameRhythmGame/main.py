@@ -21,6 +21,9 @@ global player_keys
 
 
 def main() -> None:
+    """
+    Main entry point of the program.
+    """
     global player_keys
     pygame.init()
     pygame.mixer.init()
@@ -62,12 +65,17 @@ def main() -> None:
 # loop-start-hotreload
 
 def game_loop(screen: pygame.Surface, delta_time: float, song_map: Map) -> bool:
-    """
-    The main loop of the game.
-    :param screen: The screen to draw on.
-    :param delta_time: The time delta between the previous two frames, in seconds.
-    :param song_map: The map currently being played. Test parameter.
-    :return: Whether the game should continue running.
+    """The main loop of the game separated into a function.
+
+    WIP.
+    
+    Args:
+        screen (pygame.Surface): Where all of the game parts are drawn.
+        delta_time (float): The time it takes for a frame to draw.
+        song_map (Map): The map that is being played. Test parameter.
+
+    Returns:
+        bool: Whether to continue running the game or not.
     """
     global player_keys
     
